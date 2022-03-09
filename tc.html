@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Timed commitment &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="American Option" href="american-option.html" />
+    <link rel="prev" title="Two players lottery (with collaterals)" href="2p-lottery.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Timed commitment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#alice-s-view">Alice’s view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bob-s-view">Bob’s view</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Timed commitment</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/tc.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/tc.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="timed-commitment">
+<span id="id1"></span><h1>Timed commitment<a class="headerlink" href="#timed-commitment" title="Permalink to this headline">¶</a></h1>
+<p>Assume that Alice wants to choose a secret <code class="docutils literal notranslate"><span class="pre">s</span></code>, and reveal it after some time –
+while guaranteeing that the revealed value corresponds to the chosen secret (or paying
+a penalty otherwise). This can be obtained through a timed commitment, a
+protocol with applications e.g. in gambling games, where the secret
+contains the player move, and the delay in the revelation of the secret is intended
+to prevent other players from altering the outcome of the game.</p>
+<p>In the timed commitment below, Alice commits a secret of hash <code class="docutils literal notranslate"><span class="pre">b472a266d0bd89c13706a4132ccfb16f7c3b9fcb</span></code>,
+and has until block 1550000 to reveal it. After block 1550000 is appended to the blockchain,
+Bob can redeem Alice’s deposit.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txA</span><span class="p">)</span> <span class="s">&quot;tx:0200000001c75e1b501f7a1691b16d06398b4235ab35e11ccda3c3f9160d68739c84d435ed00000000e4483045022100ad5f0022e6ae8e789a97ca9497b8d307690b96ddbfcdf822711b1983b328d26702204f276374584292322c1ad33dc7b67600673ace464e9c60990de7a0123933803c014730440220055c42ae93321b4061055c782be11d3392c84ff34b1d4fbbe3a9e208f63518170220231d7712a4d36e5397264bfc8db89fd1d13d64937ee886fb9872f260bf979760014c516b6b006c766c766b7c6b5221034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe152aeffffffff01d5ea0600000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac00000000@0&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txFee</span><span class="p">)</span> <span class="s">&quot;tx:02000000013ea7dd4d036b9a3048992e9c7e4b8c054e7949d08d233005aa79c50ee92ff0a800000000e3483045022100f956e4b07562a209662b42ab0b6d26784de59470d992a542c207e74bf03776d5022071a5089744aa25316d29cb9d1e9bd28f5f50eba6c2c5b57177bf0a17c35308a601463043021f26ce5a6c343fcb5edf3a06dbb95006cbf063393ec7b5beebd16e2c8120c059022015c4afec46a1c04d1dcfbf8e414d9f83d0a008c91b1a96f6b499edec2b8d1d48014c516b6b006c766c766b7c6b5221034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe152aeffffffff01d5ea0600000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac00000000@0&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mf">0.00453333</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">fee </span><span class="s">&quot;A&quot;</span> <span class="mf">0.00453333</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txFee</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">secret </span><span class="s">&quot;A&quot;</span> <span class="nv">a</span> <span class="s">&quot;b472a266d0bd89c13706a4132ccfb16f7c3b9fcb&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="k">choice </span><span class="p">(</span><span class="k">reveal </span><span class="p">(</span><span class="nf">a</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+      <span class="p">(</span><span class="k">after </span><span class="mi">1550000</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="nf">check-liquid</span><span class="p">))</span>
+</pre></div>
+</div>
+<section id="alice-s-view">
+<h2>Alice’s view<a class="headerlink" href="#alice-s-view" title="Permalink to this headline">¶</a></h2>
+<p>Alice opens the <a class="reference external" href="https://editor.balzac-lang.xyz/">Balzac Online Editor</a>,
+and pastes the output of the compiler.
+She starts computing her signatures, by first defining her public key <code class="docutils literal notranslate"><span class="pre">privA</span></code>,
+then putting <code class="code balzac docutils literal notranslate"><span class="pre">sig(privA)</span></code> where the compiler requires her signatures.
+She also puts the value of her secret <code class="docutils literal notranslate"><span class="pre">00000000...001</span></code>.</p>
+<p>Then, she evaluates her signatures, using <code class="code balzac docutils literal notranslate"><span class="pre">eval</span> <span class="pre">sig(privA)</span> <span class="pre">of</span> <span class="pre">Tinit&#64;0,</span> <span class="pre">...</span></code>
+at the bottom of the file, and sends them to Bob.
+Bob does the same, so Alice receives his signatures and puts them
+in the constant declarations <code class="docutils literal notranslate"><span class="pre">sigBT1</span></code>, <code class="docutils literal notranslate"><span class="pre">sigBT3</span></code>, <code class="docutils literal notranslate"><span class="pre">sigBT3</span></code>.</p>
+<p>Now all the transactions are completed and Alice can evaluate them,
+and send to the Bitcoin network <code class="docutils literal notranslate"><span class="pre">Tinit</span></code> to start the contract,
+<code class="docutils literal notranslate"><span class="pre">T1</span></code> to reveal the secret, and <code class="docutils literal notranslate"><span class="pre">T2</span></code> to redeem her deposit.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">T1</span></code> added to the blockchain, is not possible to publish
+<code class="docutils literal notranslate"><span class="pre">T3</span></code> (the transaction that send Alice’s deposit to Bob) anymore,
+because they spend the same output <code class="docutils literal notranslate"><span class="pre">Tinit&#64;0</span></code>.
+This is coherent with the specification of the contract,
+because if Alice reveals her secret, Bob shouldn’t be able to take her deposit.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="vg">privA</span> <span class="o">=</span> <span class="n">_</span> <span class="n">removed</span>
+
+<span class="kd">const</span> <span class="vg">sec_a</span><span class="o">:</span><span class="kt">string</span> <span class="o">=</span> <span class="s">&quot;000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001&quot;</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyA6</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyB1</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyB3</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyB5</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA2</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA4</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyB</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+
+<span class="kd">transaction</span> <span class="vg">Tinit</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="kp">tx:</span><span class="l">0200000001c75e1b501f7a1691b16d06398b4235ab35e11ccda3c3f9160d68739c84d435ed00000000e4483045022100ad5f0022e6ae8e789a97ca9497b8d307690b96ddbfcdf822711b1983b328d26702204f276374584292322c1ad33dc7b67600673ace464e9c60990de7a0123933803c014730440220055c42ae93321b4061055c782be11d3392c84ff34b1d4fbbe3a9e208f63518170220231d7712a4d36e5397264bfc8db89fd1d13d64937ee886fb9872f260bf979760014c516b6b006c766c766b7c6b5221034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe152aeffffffff01d5ea0600000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac00000000</span>@<span class="mi">0</span><span class="o">:</span><span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">);</span>
+ <span class="kp">tx:</span><span class="l">02000000013ea7dd4d036b9a3048992e9c7e4b8c054e7949d08d233005aa79c50ee92ff0a800000000e3483045022100f956e4b07562a209662b42ab0b6d26784de59470d992a542c207e74bf03776d5022071a5089744aa25316d29cb9d1e9bd28f5f50eba6c2c5b57177bf0a17c35308a601463043021f26ce5a6c343fcb5edf3a06dbb95006cbf063393ec7b5beebd16e2c8120c059022015c4afec46a1c04d1dcfbf8e414d9f83d0a008c91b1a96f6b499edec2b8d1d48014c516b6b006c766c766b7c6b5221034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe152aeffffffff01d5ea0600000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac00000000</span>@<span class="mi">0</span><span class="o">:</span><span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00876666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">a</span><span class="o">:</span><span class="kt">string</span><span class="o">,</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span> <span class="o">(</span><span class="k">hash160</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">==</span> <span class="kp">hash:</span><span class="l">9f3df038eeadc0c240fb7f82e31fdfe46804fc7c </span><span class="o">&amp;&amp;</span> <span class="k">size</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">&gt;=</span> <span class="mi">128</span> <span class="o">&amp;&amp;</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB1</span><span class="o">,</span> <span class="n">pubkeyA2</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">))</span> <span class="o">||</span>
+ <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB3</span><span class="o">,</span> <span class="n">pubkeyA4</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">))</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigBT1</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">30450221008e8cf2da8535b488dab5234a8a6cc942d4f3dbbf0993a0be77aa5d80f520c1fa02203e407d58fe6dc8eeca8478c9c0c0e43e5cc2b25567716489f8358b157aa9dacc01</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span><span class="o">]</span>
+<span class="c1">//received from Bob</span>
+
+<span class="kd">transaction</span> <span class="vg">T1</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span><span class="n">sec_a</span> <span class="n">sigBT1</span> <span class="nf">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00846666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB5</span><span class="o">,</span> <span class="n">pubkeyA6</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigBT2</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">3045022100fff909e25bcc800deebce554eb24b68080f2b02290b41076ad5cfb8b026453740220725b65455de27a643d74ac2deeccc3cb2bb3ba5c486bd19a2fc7c9034228e0f801</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span><span class="o">]</span>
+<span class="c1">//received from Bob</span>
+
+<span class="kd">transaction</span> <span class="vg">T2</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T1</span>@<span class="mi">0</span><span class="o">:</span>  <span class="n">sigBT2</span> <span class="nf">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00816666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigBT3</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">3045022100c58572e8e1818ebbef2111da049a27f93cac791fc9d881acc48e43075382f8fb022032b2ff112f414463f884ccfcf427b4c952826e338779de63c3055d57b6ab89a501</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span><span class="o">]</span>
+<span class="c1">//received from Bob</span>
+<span class="kd">const</span> <span class="vg">sigAT3</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T3</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span> <span class="s">&quot;0&quot;</span> <span class="n">sigBT3</span> <span class="nf">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00846666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+ <span class="k">absLock</span> <span class="o">=</span> <span class="k">block</span> <span class="mi">1550000</span>
+<span class="o">}</span>
+
+<span class="k">eval</span> <span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="k">of</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">,</span> <span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="k">of</span> <span class="n">Tinit</span>@<span class="mi">1</span><span class="o">,</span>
+    <span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="k">of</span> <span class="n">T1</span><span class="o">,</span> <span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="k">of</span> <span class="n">T2</span><span class="o">,</span> <span class="k">sig</span><span class="o">(</span><span class="n">privA</span><span class="o">)</span> <span class="k">of</span> <span class="n">T3</span><span class="o">,</span>
+    <span class="n">Tinit</span><span class="o">,</span> <span class="n">T1</span><span class="o">,</span> <span class="n">T2</span>
+</pre></div>
+</div>
+</section>
+<section id="bob-s-view">
+<h2>Bob’s view<a class="headerlink" href="#bob-s-view" title="Permalink to this headline">¶</a></h2>
+<p>The steps executed by Bob are the dual of the Alice’s ones.
+Differently from Alice, he cannot publish <code class="docutils literal notranslate"><span class="pre">T1</span></code> right away, because he doesn’t know the secret.
+He wait for Alice to reveal her secret, or until block 155000,
+when the timelock on <code class="docutils literal notranslate"><span class="pre">T3</span></code> will unlock, and publish it to take Alice’s deposit.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="vg">privB</span> <span class="o">=</span> <span class="n">_</span> <span class="c1">//removed</span>
+
+<span class="kd">const</span> <span class="vg">sec_a</span><span class="o">:</span><span class="kt">string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyA6</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyB1</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyB3</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyB5</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA2</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA4</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyB</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+
+<span class="kd">const</span> <span class="vg">sigA0</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">304402204adabfd7e29232148e3fa6a4bd8d3d3dd8fe6d5a9db8c77eec79fb556addb82b0220230c05987f38db659f9d1168ed7083a4ed602d44ba789c5ef903241e4577f6d501</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span><span class="o">]</span>
+<span class="c1">//received from Alice</span>
+
+<span class="kd">const</span> <span class="vg">sigAFee</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">3045022100a81265cba65ad2fd793d241210ab194629efe41126673130cc40297c9d177c250220161c6087dcbb5957c21c2b415312eded883ed80964e6976e2559976e5cf21d6101</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span><span class="o">]</span>
+<span class="c1">//received from Alice</span>
+
+<span class="kd">transaction</span> <span class="vg">Tinit</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="kp">tx:</span><span class="l">0200000001c75e1b501f7a1691b16d06398b4235ab35e11ccda3c3f9160d68739c84d435ed00000000e4483045022100ad5f0022e6ae8e789a97ca9497b8d307690b96ddbfcdf822711b1983b328d26702204f276374584292322c1ad33dc7b67600673ace464e9c60990de7a0123933803c014730440220055c42ae93321b4061055c782be11d3392c84ff34b1d4fbbe3a9e208f63518170220231d7712a4d36e5397264bfc8db89fd1d13d64937ee886fb9872f260bf979760014c516b6b006c766c766b7c6b5221034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe152aeffffffff01d5ea0600000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac00000000</span>@<span class="mi">0</span><span class="o">:</span><span class="n">sigA0</span><span class="o">;</span>
+ <span class="kp">tx:</span><span class="l">02000000013ea7dd4d036b9a3048992e9c7e4b8c054e7949d08d233005aa79c50ee92ff0a800000000e3483045022100f956e4b07562a209662b42ab0b6d26784de59470d992a542c207e74bf03776d5022071a5089744aa25316d29cb9d1e9bd28f5f50eba6c2c5b57177bf0a17c35308a601463043021f26ce5a6c343fcb5edf3a06dbb95006cbf063393ec7b5beebd16e2c8120c059022015c4afec46a1c04d1dcfbf8e414d9f83d0a008c91b1a96f6b499edec2b8d1d48014c516b6b006c766c766b7c6b5221034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe152aeffffffff01d5ea0600000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac00000000</span>@<span class="mi">0</span><span class="o">:</span><span class="n">sigAFee</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00876666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">a</span><span class="o">:</span><span class="kt">string</span><span class="o">,</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span> <span class="o">(</span><span class="k">hash160</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">==</span> <span class="kp">hash:</span><span class="l">9f3df038eeadc0c240fb7f82e31fdfe46804fc7c </span><span class="o">&amp;&amp;</span> <span class="k">size</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">&gt;=</span> <span class="mi">128</span> <span class="o">&amp;&amp;</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB1</span><span class="o">,</span> <span class="n">pubkeyA2</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">))</span> <span class="o">||</span>
+ <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB3</span><span class="o">,</span> <span class="n">pubkeyA4</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">))</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT1</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">304402205f97481078e6b4579798a0233d0451cda9c905ae37adab483229d3034089e08302207ce6d7207a913aab50247f5961347e87802c28eb11a6aa9f45e0f9c92664e8ba01</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span><span class="o">]</span>
+<span class="c1">//received from Alice</span>
+
+<span class="kd">transaction</span> <span class="vg">T1</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span><span class="n">sec_a</span> <span class="nf">sig</span><span class="o">(</span><span class="n">privB</span><span class="o">)</span> <span class="n">sigAT1</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00846666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB5</span><span class="o">,</span> <span class="n">pubkeyA6</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT2</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span>  <span class="kp">sig:</span><span class="l">3045022100bcd87e903813a49e9c598c561a952ee26ceec4ac010644c6dd0055a518058c0d02201e35953d7f7c50244a8eeb0b289c387167f2fd9096e7f7f16dcb2501de8e658b01</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span><span class="o">]</span>
+<span class="c1">//received from Alice</span>
+
+<span class="kd">transaction</span> <span class="vg">T2</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T1</span>@<span class="mi">0</span><span class="o">:</span>  <span class="k">sig</span><span class="o">(</span><span class="n">privB</span><span class="o">)</span> <span class="n">sigAT2</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00816666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT3</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="kp">sig:</span><span class="l">304402202c47c0fb3d196074541d30e3d3680e1206f50d7abbf4431436f34423297729ba022022d7f5e5864eee01b721a2db695a58c1b586929f750d299b2a41122d62b247c001</span><span class="o">[</span><span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span><span class="o">]</span>
+<span class="c1">//received from Alice</span>
+
+<span class="kd">transaction</span> <span class="vg">T3</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span> <span class="s">&quot;0&quot;</span> <span class="k">sig</span><span class="o">(</span><span class="n">privB</span><span class="o">)</span> <span class="n">sigAT3</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">00846666</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+ <span class="k">absLock</span> <span class="o">=</span> <span class="k">block</span> <span class="mi">1550000</span>
+<span class="o">}</span>
+
+<span class="k">eval</span> <span class="k">sig</span><span class="o">(</span><span class="n">privB</span><span class="o">)</span> <span class="k">of</span> <span class="n">T1</span><span class="o">,</span> <span class="k">sig</span><span class="o">(</span><span class="n">privB</span><span class="o">)</span> <span class="k">of</span> <span class="n">T2</span><span class="o">,</span> <span class="k">sig</span><span class="o">(</span><span class="n">privB</span><span class="o">)</span> <span class="k">of</span> <span class="n">T3</span><span class="o">,</span>
+    <span class="n">Tinit</span><span class="o">,</span> <span class="n">T3</span>
+</pre></div>
+</div>
+<p>We have executed the compiled contract on the Bitcoin testnet. The hash of the transactions are the following:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 5%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Phase</p></th>
+<th class="head"><p>Tx name</p></th>
+<th class="head"><p>Tx id</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Init</p></td>
+<td><p>Tinit</p></td>
+<td><p><a class="reference external" href="https://chain.so/tx/BTCTEST/139a7b529cb5b91ab54257abf22797b25700430f0cc49bf69324fc1d07827ad2">139a7b529cb5b91ab54257abf22797b25700430f0cc49bf69324fc1d07827ad2</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>reveal a</p></td>
+<td><p>T1</p></td>
+<td><p><a class="reference external" href="https://chain.so/tx/BTCTEST/46ceb75f2261c9879fac0192547dceb35123ee5188158fe7cbb1ca6200e7cefb">46ceb75f2261c9879fac0192547dceb35123ee5188158fe7cbb1ca6200e7cefb</a></p></td>
+</tr>
+<tr class="row-even"><td><p>withdraw “A”</p></td>
+<td><p>T2</p></td>
+<td><p><a class="reference external" href="https://chain.so/tx/BTCTEST/6e1fd285cab75985de9b52a6068e67bc074d80e81baac72bb741004333df1f8e">6e1fd285cab75985de9b52a6068e67bc074d80e81baac72bb741004333df1f8e</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="american-option.html" class="btn btn-neutral float-right" title="American Option" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="2p-lottery.html" class="btn btn-neutral" title="Two players lottery (with collaterals)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

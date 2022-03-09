@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BitML Toolchain &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting started" href="installation.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>BitML Toolchain</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/index.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="bitml-toolchain">
+<h1>BitML Toolchain<a class="headerlink" href="#bitml-toolchain" title="Permalink to this headline">¶</a></h1>
+<p>BitML is a domain-specific language for Bitcoin smart contracts, introduced in <a class="reference internal" href="#ccs18" id="id1"><span>[CCS18]</span></a>.
+The BitML toolchain implements:</p>
+<ul class="simple">
+<li><p>an <strong>IDE</strong> for developing BitML contracts, integrated in the DrRacket IDE <a class="reference internal" href="#racket" id="id2"><span>[RACKET]</span></a>;</p></li>
+<li><p>a <strong>compiler</strong> which translates BitML contracts into <em>standard</em> Bitcoin transaction. The compiler is <em>computationally sound</em>, meaning that computational attacks (i.e., at the level of Bitcoin transactions) can be detected at the symbolic level of the BitML semantics;</p></li>
+<li><p>a <strong>model checker</strong> which verifies security properties of BitML contracts, like their <em>liquidity</em> (i.e., funds never remain frozen in a contract <a class="reference internal" href="#post19" id="id3"><span>[POST19]</span></a>), and custom LTL properties. The model checker is based on Maude <a class="reference internal" href="#maude" id="id4"><span>[MAUDE]</span></a>.</p></li>
+</ul>
+<p>We published a paper <a class="reference internal" href="#esec" id="id5"><span>[ESEC]</span></a> describing out toolchain,
+accompanied by a short video <a class="reference external" href="https://www.youtube.com/watch?v=bxx3bM5Pm6c">demonstration</a>.
+We also presented the BitML toolchain at <a class="reference external" href="https://telaviv2019.scalingbitcoin.org/">Scaling Bitcoin 2019</a> (<a class="reference external" href="https://youtu.be/-gdfxNalDIc?t=5540">video</a>).</p>
+<p>The BitML toolchain is developed by the <a class="reference external" href="http://blockchain.unica.it/">Blockchain&#64;Unica group</a>
+of the <a class="reference external" href="https://www.unica.it/unica/en/homepage.page">University of Cagliari</a>.
+The project is open source, and you are welcome to contribute to its
+<a class="reference external" href="https://github.com/bitml-lang">repositories</a>.</p>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>BitML is intended for research purposes only.
+Do not use it to create mainnet transactions, or do it at your own risk.</p>
+</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="citation">
+<dt class="label" id="ccs18"><span class="brackets"><a class="fn-backref" href="#id1">CCS18</a></span></dt>
+<dd><ol class="upperalpha simple" start="13">
+<li><p>Bartoletti, R. Zunino. <strong>BitML: A Calculus for Bitcoin Smart Contracts</strong>. In <em>ACM SIGSAC CCS</em>, 2018. Preprint: <a class="reference external" href="https://eprint.iacr.org/2018/122.pdf">https://eprint.iacr.org/2018/122.pdf</a></p></li>
+</ol>
+</dd>
+<dt class="label" id="post19"><span class="brackets"><a class="fn-backref" href="#id3">POST19</a></span></dt>
+<dd><ol class="upperalpha simple" start="13">
+<li><p>Bartoletti, R. Zunino. <strong>Verifying liquidity of Bitcoin contracts</strong>. In <em>Principles of Security and Trust (POST)</em>, 2019. Preprint: <a class="reference external" href="https://eprint.iacr.org/2018/1125.pdf">https://eprint.iacr.org/2018/1125.pdf</a></p></li>
+</ol>
+</dd>
+<dt class="label" id="esec"><span class="brackets"><a class="fn-backref" href="#id5">ESEC</a></span></dt>
+<dd><ol class="upperalpha simple" start="14">
+<li><p>Atzei, M. Bartoletti, S. Lande, N. Yoshida, R. Zunino. <strong>Developing secure Bitcoin contracts with BitML</strong>. In Proceedings of the <em>2019 27th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)</em>. <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/3338906.3341173">https://dl.acm.org/doi/pdf/10.1145/3338906.3341173</a></p></li>
+</ol>
+</dd>
+<dt class="label" id="racket"><span class="brackets"><a class="fn-backref" href="#id2">RACKET</a></span></dt>
+<dd><p><a class="reference external" href="https://racket-lang.org/">https://racket-lang.org/</a></p>
+</dd>
+<dt class="label" id="maude"><span class="brackets"><a class="fn-backref" href="#id4">MAUDE</a></span></dt>
+<dd><p><a class="reference external" href="http://maude.cs.illinois.edu/w/index.php/The_Maude_System">http://maude.cs.illinois.edu/w/index.php/The_Maude_System</a> <a class="reference external" href="http://maude.sip.ucm.es/strategies/">http://maude.sip.ucm.es/strategies/</a></p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

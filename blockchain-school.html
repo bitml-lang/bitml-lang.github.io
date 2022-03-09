@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Case study &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Case study</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/blockchain-school.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/blockchain-school.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="case-study">
+<h1>Case study<a class="headerlink" href="#case-study" title="Permalink to this headline">¶</a></h1>
+<p>Your case study is a custody smart contract that handles some funds
+seized from someone suspected of illegal activities.
+A jury decides if the defendant is innocent;
+if so, the seized bitcoins must return to the defendant.
+There is no need for the entire jury to judge the defendant innocent, the majority of members is sufficient.</p>
+<section id="exercise-1-basic-bitml-contract">
+<h2>Exercise 1 - basic BitML contract<a class="headerlink" href="#exercise-1-basic-bitml-contract" title="Permalink to this headline">¶</a></h2>
+<p>Actors:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>: members of the jury</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: defendant</p></li>
+</ul>
+</div></blockquote>
+<p>Write a contract that implements the flow described above.</p>
+<p>Verify that if two jurors agree to return the bitcoins to <code class="docutils literal notranslate"><span class="pre">S</span></code>,
+the contract is liquid.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If you only care if a participant authorizes something, and not what particular contract she authorize,
+you can omit the contract from the strategy.
+Example: in <code class="code bitml docutils literal notranslate"><span class="pre">(strategy</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(do-auth</span> <span class="pre">(withdraw</span> <span class="pre">&quot;S&quot;)))</span></code>, you can omit <code class="code bitml docutils literal notranslate"><span class="pre">(withdraw</span> <span class="pre">&quot;S&quot;)</span></code>.</p>
+</div>
+<p>The skeleton of your contracts is the following:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;021927aa11df2776adc8fde8f36c4f7116dbfb466d6c2cd500ae3eabc0fcfb0a33&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;S&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f829&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:something@0&quot;</span><span class="p">)</span> <span class="c1">;; 1 BTC seized</span>
+ <span class="p">)</span>
+
+ <span class="nv">WRITE</span> <span class="nv">YOUR</span> <span class="nv">CONTRACT</span> <span class="nv">HERE</span>
+
+ <span class="nv">WRITE</span> <span class="nv">YOUR</span> <span class="nv">QUERY</span> <span class="nv">HERE</span>
+ <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exercise-2-extend-bitml-contract">
+<h2>Exercise 2 - extend BitML contract<a class="headerlink" href="#exercise-2-extend-bitml-contract" title="Permalink to this headline">¶</a></h2>
+<p>Actors:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>: jurors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: defendant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: tribunal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cur</span></code>: curator</p></li>
+</ul>
+</div></blockquote>
+<p>Extend the contract as follows.
+After two jurors agree that the defendant is innocent, the balance is split in two parts:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0.9 BTC, which can return to the defendant after block 160000000. At any time before the deadline, the curator can oppose the jury decision and send the bitcoins to the tribunal</p></li>
+<li><p>0.1 BTC, which goes to the curator as a service fee.</p></li>
+</ul>
+</div></blockquote>
+<p>Verify that if two members of the jury and the curator agree to return the bitcoins to <code class="docutils literal notranslate"><span class="pre">S</span></code>,
+the contract is liquid.</p>
+<p>Check that the curator gets 0.1 BTC if two members of the jury agree.</p>
+</section>
+<section id="exercise-3-working-with-balzac-transactions">
+<h2>Exercise 3 - working with Balzac transactions<a class="headerlink" href="#exercise-3-working-with-balzac-transactions" title="Permalink to this headline">¶</a></h2>
+<p>For this exercise, you have to write the <a class="reference external" href="https://editor.balzac-lang.xyz/">Balzac</a> transactions
+of the following contract,
+which is a modification of the first one.</p>
+<p>Write a transaction which locks the seized bitcoin.
+The transaction can be redeemed supplying two out of three
+signatures of the jurors AND the signature of the curator, but only after <code class="docutils literal notranslate"><span class="pre">2019-06-14</span></code>.
+The transaction can also be redeemed by the curator alone, so she has until Friday to oppose the decision of the jury.
+The identity of the defendant is not known in advance,
+so his public key must be a parameter of the transaction that returns the seized bitcoin to him.</p>
+</section>
+<section id="exercise-4-the-final-boss">
+<h2>Exercise 4 - the final boss<a class="headerlink" href="#exercise-4-the-final-boss" title="Permalink to this headline">¶</a></h2>
+<p>Actors:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A1</span></code>, <code class="docutils literal notranslate"><span class="pre">B1</span></code>, <code class="docutils literal notranslate"><span class="pre">C1</span></code>: jurors of the first jury</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A2</span></code>, <code class="docutils literal notranslate"><span class="pre">B2</span></code>, <code class="docutils literal notranslate"><span class="pre">C2</span></code>: jurors of the second jury</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: defendant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cur</span></code>: curator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: tribunal</p></li>
+</ul>
+</div></blockquote>
+<p>The contract is similar to the second one, but if the curator opposes the decision of the jury,
+there is another round of judgment. The second round is performed by a second jury.
+If the curator opposes the decision of the second jury, the seized bitcoin goes to the tribunal.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To avoid to repeat the same piece of code multiple times, you can define a constant
+with <code class="code bitml docutils literal notranslate"><span class="pre">(define</span> <span class="pre">(ContractName)</span> <span class="pre">contract)</span></code> and use it anywhere with <code class="code bitml docutils literal notranslate"><span class="pre">(ref</span> <span class="pre">(ContractName))</span></code>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

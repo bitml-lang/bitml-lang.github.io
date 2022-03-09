@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Compiling BitML contracts &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Verifying BitML contracts" href="verification.html" />
+    <link rel="prev" title="BitML in a nutshell" href="nutshell.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiling BitML contracts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#from-bitml-to-balzac-transactions">From BitML to Balzac transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#from-balzac-to-bitcoin">From Balzac to Bitcoin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Compiling BitML contracts</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/compiler.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/compiler.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="compiling-langname-contracts">
+<h1>Compiling BitML contracts<a class="headerlink" href="#compiling-langname-contracts" title="Permalink to this headline">¶</a></h1>
+<p>BitML is implemented as Racket language. You can use it either through DrRacket
+or through the racket command-line interpreter. In this tutorial we will use DrRacket.</p>
+<section id="from-bitml-to-balzac-transactions">
+<h2>From BitML to Balzac transactions<a class="headerlink" href="#from-bitml-to-balzac-transactions" title="Permalink to this headline">¶</a></h2>
+<p>We start compiling the following contract:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txA</span><span class="p">)</span> <span class="s">&quot;tx:02000000000101000225925157edb93dda00c3765d5f6aee486b67737662cf46cb436471c645f918000000171600145093f95239942f953d077e72c495583ed601cc95feffffff0240420f00000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac75d513000000000017a91451329a63924dcc4876c6e94c6ad4957cedd115b88702463043022040fc9549ec6b98027dd7f73373317b05dabb2c528f081a00b4e25ed34ca6e91f021f319d47780bb90a61b4e5257f47ccbb52eee736f4897d5b4d5a19b3df5f3ed8012102df8bd0680cb7ecf1f70eef399f9359a025b96fb776055a2150cbc973def82c116d191700@0&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txFee</span><span class="p">)</span> <span class="s">&quot;tx:02000000000101adbcf28818d2556fb85ce7f6068775a6a4fd4befe650d3d7d120b609e5af1e920100000017160014a5d12120913a41cdd3be9ef88b60838b8c0db3b7feffffff028ac710000000000017a914664180e7578033f9cef5bc82b3112855f775f02587a0860100000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac024730440220290f9526ed5e22d4ae72c66702f5f70dff4c5ea72445cd20112782da1986332e02201d872a0a53fa13b34a9273776dfcd0ea7385e449fec1e95263bdde96fda084e10121021215eb7fabd9bb0c1f1441bf35bade28d9e64dc798a666eb4eaf47e134a74b446d191700@1&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mf">0.01</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">fee </span><span class="s">&quot;A&quot;</span> <span class="mf">0.001</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txFee</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The contract is a simple transfer of currency: the BTC deposited in the contract are transferred to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>.
+The preconditions of the contract require <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> to provide two transaction outputs:</p>
+<ul class="simple">
+<li><p><code class="code bitml docutils literal notranslate"><span class="pre">(deposit</span> <span class="pre">&quot;A&quot;</span> <span class="pre">0.01</span> <span class="pre">(ref</span> <span class="pre">(txA))</span></code> of value 0.01 BTC, to be used as a deposit,</p></li>
+<li><p><code class="code bitml docutils literal notranslate"><span class="pre">(fee</span> <span class="pre">&quot;A&quot;</span> <span class="pre">0.001</span> <span class="pre">(ref</span> <span class="pre">(txFee)))</span></code> of value 0.001 BTC, to be used to provide a fee for each transaction.
+If the value of this deposit is greater than the fee required to execute the contract,
+the change will be redeemed by the participant who redeems the last transaction of the contract.</p></li>
+</ul>
+<p>The transaction output <code class="code bitml docutils literal notranslate"><span class="pre">txA</span></code> is redeemable by <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> through her private key.
+The value <code class="code bitml docutils literal notranslate"><span class="pre">&quot;tx:02000000000102f28b8e...0512e2be394297475ed157a9cfc6bdb51600&quot;</span></code> is the serialized transaction,
+which can be obtained through the Bitcoin command line
+or a <a class="reference external" href="https://chain.so/tx/BTCTEST/6aa0154ee6f0981e2e447d569db2a7d2a1534cf3c535031cd76564cf01fae57b/">block explorer</a>.
+The same holds for transaction output <code class="code bitml docutils literal notranslate"><span class="pre">txFee</span></code>.</p>
+<p>Paste the code into a DrRacket window, then hit the “Run” button in the upper right corner.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Don’t forget to specify you are using BitML by starting your file with <code class="code bitml docutils literal notranslate"><span class="pre">#lang</span> <span class="pre">bitml</span></code>.</p>
+</div>
+<figure class="align-center">
+<a class="img-border reference internal image-reference" href="_images/compiled.png"><img alt="_images/compiled.png" class="img-border" src="_images/compiled.png" style="width: 873.0px; height: 612.9px;" /></a>
+</figure>
+<p>DrRacket will show the output of the compilation, which contains the transactions of the contract,
+expressed in <a class="reference external" href="https://blockchain.unica.it/balzac/docs/">Balzac</a>.</p>
+</section>
+<section id="from-balzac-to-bitcoin">
+<h2>From Balzac to Bitcoin<a class="headerlink" href="#from-balzac-to-bitcoin" title="Permalink to this headline">¶</a></h2>
+<p>Balzac is an high-level language for writing transactions, verifying their correctness, and compiling them into actual Bitcoin transactions.
+We exploit Balzac to compile the transaction of the contract, so we can send them to the Bitcoin network.</p>
+<p>Here is the compiled output of the previous contract.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="vg">pubkeyA2</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyB1</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyB</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+
+<span class="kd">const</span> <span class="vg">sigA0</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span> <span class="c1">//add signature for output tx:02000000000101000225925157edb93dda00c3765d5f6aee486b67737662cf46cb436471c645f918000000171600145093f95239942f953d077e72c495583ed601cc95feffffff0240420f00000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac75d513000000000017a91451329a63924dcc4876c6e94c6ad4957cedd115b88702463043022040fc9549ec6b98027dd7f73373317b05dabb2c528f081a00b4e25ed34ca6e91f021f319d47780bb90a61b4e5257f47ccbb52eee736f4897d5b4d5a19b3df5f3ed8012102df8bd0680cb7ecf1f70eef399f9359a025b96fb776055a2150cbc973def82c116d191700@0</span>
+<span class="kd">const</span> <span class="vg">sigAFee</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span> <span class="c1">//add signature for output tx:02000000000101adbcf28818d2556fb85ce7f6068775a6a4fd4befe650d3d7d120b609e5af1e920100000017160014a5d12120913a41cdd3be9ef88b60838b8c0db3b7feffffff028ac710000000000017a914664180e7578033f9cef5bc82b3112855f775f02587a0860100000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac024730440220290f9526ed5e22d4ae72c66702f5f70dff4c5ea72445cd20112782da1986332e02201d872a0a53fa13b34a9273776dfcd0ea7385e449fec1e95263bdde96fda084e10121021215eb7fabd9bb0c1f1441bf35bade28d9e64dc798a666eb4eaf47e134a74b446d191700@1</span>
+
+<span class="kd">const</span> <span class="vg">privkeyA</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cUnBMKCcvtpuVcfWajJBEF9uQaeNJmcRM6Vasw1vj3ZkiaoAGEuH</span>
+
+<span class="kd">transaction</span> <span class="vg">Tinit</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="kp">tx:</span><span class="l">02000000000101000225925157edb93dda00c3765d5f6aee486b67737662cf46cb436471c645f918000000171600145093f95239942f953d077e72c495583ed601cc95feffffff0240420f00000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac75d513000000000017a91451329a63924dcc4876c6e94c6ad4957cedd115b88702463043022040fc9549ec6b98027dd7f73373317b05dabb2c528f081a00b4e25ed34ca6e91f021f319d47780bb90a61b4e5257f47ccbb52eee736f4897d5b4d5a19b3df5f3ed8012102df8bd0680cb7ecf1f70eef399f9359a025b96fb776055a2150cbc973def82c116d191700</span>@<span class="mi">0</span><span class="o">:</span><span class="n">sigA0</span><span class="o">;</span> <span class="kp">tx:</span><span class="l">02000000000101adbcf28818d2556fb85ce7f6068775a6a4fd4befe650d3d7d120b609e5af1e920100000017160014a5d12120913a41cdd3be9ef88b60838b8c0db3b7feffffff028ac710000000000017a914664180e7578033f9cef5bc82b3112855f775f02587a0860100000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac024730440220290f9526ed5e22d4ae72c66702f5f70dff4c5ea72445cd20112782da1986332e02201d872a0a53fa13b34a9273776dfcd0ea7385e449fec1e95263bdde96fda084e10121021215eb7fabd9bb0c1f1441bf35bade28d9e64dc798a666eb4eaf47e134a74b446d191700</span>@<span class="mi">1</span><span class="o">:</span><span class="n">sigAFee</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">010700000000000001</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">.</span>
+ <span class="o">((</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB1</span><span class="o">,</span> <span class="n">pubkeyA2</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">))</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigBT1</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigAT1</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T1</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span>  <span class="n">sigBT1</span> <span class="n">sigAT1</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0104</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Start by pasting it in the <a class="reference external" href="https://editor.balzac-lang.xyz/">Balzac web editor</a>.</p>
+<figure class="align-center">
+<a class="img-border reference internal image-reference" href="_images/balzac1.png"><img alt="_images/balzac1.png" class="img-border" src="_images/balzac1.png" style="width: 1018.8000000000001px; height: 623.7px;" /></a>
+</figure>
+<p>To stipulate the contract <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> have to sign the transaction <code class="code balzac docutils literal notranslate"><span class="pre">Tinit</span></code> and send it to the Bitcoin network.
+Balzac can compute the signature for her, but it needs her public key. So, she adds it:</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="vg">privkeyA</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cUnBMKCcvtpuVcfWajJBEF9uQaeNJmcRM6Vasw1vj3ZkiaoAGEuH</span>
+</pre></div>
+</div>
+<p>Now, she can compute and add the signature to the transaction <code class="code balzac docutils literal notranslate"><span class="pre">Tinit</span></code>,
+with the <code class="code balzac docutils literal notranslate"><span class="pre">sig(_)</span></code> function.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">transaction</span> <span class="vg">Tinit</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="kp">tx:</span><span class="l">02000000000101000225925157edb93dda00c3765d5f6aee486b67737662cf46cb436471c645f918000000171600145093f95239942f953d077e72c495583ed601cc95feffffff0240420f00000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac75d513000000000017a91451329a63924dcc4876c6e94c6ad4957cedd115b88702463043022040fc9549ec6b98027dd7f73373317b05dabb2c528f081a00b4e25ed34ca6e91f021f319d47780bb90a61b4e5257f47ccbb52eee736f4897d5b4d5a19b3df5f3ed8012102df8bd0680cb7ecf1f70eef399f9359a025b96fb776055a2150cb</span>
+ <span class="n">c973def82c116d191700</span>@<span class="mi">0</span><span class="o">:</span><span class="k">sig</span><span class="o">(</span><span class="n">privkeyA</span><span class="o">);</span>
+ <span class="kp">tx:</span><span class="l">02000000000101adbcf28818d2556fb85ce7f6068775a6a4fd4befe650d3d7d120b609e5af1e920100000017160014a5d12120913a41cdd3be9ef88b60838b8c0db3b7feffffff028ac710000000000017a914664180e7578033f9cef5bc82b3112855f775f02587a0860100000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac024730440220290f9526ed5e22d4ae72c66702f5f70dff4c5ea72445cd20112782da1986332e02201d872a0a53fa13b34a9273776dfcd0ea7385e449fec1e95263bdde96fda084e10121021215eb7fabd9bb0c1f1441bf35bade28d9e64dc798a666eb4eaf47e134a7</span>
+ <span class="mi">4</span><span class="n">b446d191700</span>@<span class="mi">1</span><span class="o">:</span><span class="k">sig</span><span class="o">(</span><span class="n">privkeyA</span><span class="o">)</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">01070000000000000</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">.</span>
+ <span class="o">((</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyB1</span><span class="o">,</span> <span class="n">pubkeyA2</span><span class="o">;</span> <span class="n">sB</span><span class="o">,</span> <span class="n">sA</span><span class="o">)</span> <span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Firstly, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> evaluates the transaction <code class="code balzac docutils literal notranslate"><span class="pre">Tinit</span></code> adding to the bottom of the file:</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="k">eval</span> <span class="n">Tinit</span>
+</pre></div>
+</div>
+<p>then pressing the button “Evaluate”.</p>
+<figure class="align-center">
+<a class="img-border reference internal image-reference" href="_images/balzac2.png"><img alt="_images/balzac2.png" class="img-border" src="_images/balzac2.png" style="width: 1015.2px; height: 511.2px;" /></a>
+</figure>
+<p>The last string in the picture above is the serialized transaction that can be published in the Bitcoin network as
+described <a class="reference external" href="https://blockchain.unica.it/balzac/docs/raw-transactions.html">here</a>.
+You can find the transaction on a Bitcoin Testnet <a class="reference external" href="https://chain.so/tx/BTCTEST/155f58c8c8b4c98d6de1e61a96463b04b3c3aceb6459c9fec5c140d4f6e7eba6">explorer</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In this tutorial we work on the Bitcoin testnet. If you want to use the mainnet (at your own risk), add <code class="code balzac docutils literal notranslate"><span class="pre">network</span> <span class="pre">mainnet</span></code> to your Balzac file.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="verification.html" class="btn btn-neutral float-right" title="Verifying BitML contracts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nutshell.html" class="btn btn-neutral" title="BitML in a nutshell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

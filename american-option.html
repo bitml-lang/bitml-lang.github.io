@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>American Option &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Auction" href="auction.html" />
+    <link rel="prev" title="Timed commitment" href="tc.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>American Option</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/american-option.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/american-option.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="american-option">
+<h1>American Option<a class="headerlink" href="#american-option" title="Permalink to this headline">¶</a></h1>
+<p>An <em>option</em> is a financial contract that allows an investor to exercise a choice
+between two subcontracts.
+We implement in BitML the <em>American option</em>,
+where the investor can exercise the choice anytime before a given deadline.</p>
+<p>We start by defining the parametric contract <code class="code bitml docutils literal notranslate"><span class="pre">(AmericanOption</span> <span class="pre">Part</span> <span class="pre">t</span> <span class="pre">Contract1</span> <span class="pre">Contract2</span> <span class="pre">Default)</span></code>.
+The parameter of the contract are: a participant <code class="docutils literal notranslate"><span class="pre">Part</span></code> who can choose, before deadline <code class="docutils literal notranslate"><span class="pre">t</span></code>,
+to authorise the either <code class="docutils literal notranslate"><span class="pre">Contract1</span></code> or <code class="docutils literal notranslate"><span class="pre">Contract2</span></code>.
+If time <code class="docutils literal notranslate"><span class="pre">t</span></code> passes, the contract can proceed as the parameter contract <code class="docutils literal notranslate"><span class="pre">Default</span></code>.</p>
+<p>We exploit the American Option to implement an investment contract between
+an investor <code class="docutils literal notranslate"><span class="pre">A</span></code> and an issuer <code class="docutils literal notranslate"><span class="pre">I</span></code>.
+After stipulating the contract, <code class="docutils literal notranslate"><span class="pre">A</span></code> can choose whether to invest, or to retract.
+If she authorise the contract <code class="docutils literal notranslate"><span class="pre">Invest</span></code>,
+she immediately pays her 1 BTC deposit to <code class="docutils literal notranslate"><span class="pre">I</span></code>, expecting to get back 1.1 BTC
+from <code class="docutils literal notranslate"><span class="pre">I</span></code> after block 160000000.
+If she authorise the contract <code class="docutils literal notranslate"><span class="pre">Retract</span></code>, she does not invest,
+but she only gets back 0.95 BTC, paying 0.05 BTC to <code class="docutils literal notranslate"><span class="pre">I</span></code> as a fee.
+Otherwise, if she doesn’t chose before the deadline <code class="docutils literal notranslate"><span class="pre">t</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">I</span></code> can invoke the contract <code class="docutils literal notranslate"><span class="pre">Default</span></code>,
+which returns <code class="docutils literal notranslate"><span class="pre">A</span></code>’s deposit to her, minus a 0.1 BTC penalty,
+which goes to <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>Finally, we verify that the contract is liquid.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;I&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txA</span><span class="p">)</span> <span class="s">&quot;.&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txFee</span><span class="p">)</span> <span class="s">&quot;..&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txI</span><span class="p">)</span> <span class="s">&quot;...&quot;</span><span class="p">)</span>
+
+
+<span class="c1">;; Part can choose at time t whether to execute Contract1 or Contract2</span>
+<span class="c1">;; after deadline t, the contract Default can be executed</span>
+<span class="c1">;--------------------------------------------------------------</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">AmericanOption</span> <span class="nv">Part</span> <span class="nv">t</span> <span class="nv">Contract1</span> <span class="nv">Contract2</span> <span class="nv">Default</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">choice</span>
+   <span class="p">(</span><span class="k">auth </span><span class="nv">Part</span> <span class="p">(</span><span class="k">tau </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Contract1</span><span class="p">))))</span>
+   <span class="p">(</span><span class="k">auth </span><span class="nv">Part</span> <span class="p">(</span><span class="k">tau </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Contract2</span><span class="p">))))</span>
+   <span class="p">(</span><span class="k">after </span><span class="nv">t</span> <span class="p">(</span><span class="k">tau </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Default</span><span class="p">))))))</span>
+
+<span class="c1">; Sub-contracts used to instantiate the American Option</span>
+<span class="c1">;--------------------------------------------------------------</span>
+
+<span class="c1">;; A chooses not to proceed with the investment,</span>
+<span class="c1">;; and gets back her deposit minus a cancellation fee.</span>
+<span class="c1">;; I gets gets the fee from A.</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Retract</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">split</span>
+   <span class="p">(</span><span class="mf">0.95</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+   <span class="p">(</span><span class="mf">0.05</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;I&quot;</span><span class="p">))))</span>
+
+<span class="c1">;; A chooses to proceed with the investment.</span>
+<span class="c1">;; The funds are locked up to a certain time,</span>
+<span class="c1">;; then she can withdraw the whole balance</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Invest</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">split</span>
+   <span class="p">(</span><span class="mi">1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;I&quot;</span><span class="p">))</span>
+   <span class="p">(</span><span class="mi">0</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">after </span><span class="mi">160000000</span> <span class="p">(</span><span class="k">put </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))))))</span>
+
+<span class="c1">;; A failed to choose whether to invest or retract.</span>
+<span class="c1">;; She gets back her deposit minus a penalty.</span>
+<span class="c1">;; I gets gets the penalty from A.</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Default</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">split</span>
+   <span class="p">(</span><span class="mf">0.9</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+   <span class="p">(</span><span class="mf">0.1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;I&quot;</span><span class="p">))))</span>
+<span class="c1">;--------------------------------------------------------------</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">vol-deposit </span><span class="s">&quot;I&quot;</span> <span class="nv">x</span> <span class="mf">1.1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txI</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">fee </span><span class="s">&quot;A&quot;</span> <span class="mf">0.01</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txFee</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">AmericanOption</span> <span class="s">&quot;A&quot;</span> <span class="mi">1550000</span> <span class="nv">Retract</span> <span class="nv">Invest</span> <span class="nv">Default</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="nf">check-liquid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This is the result of the compilation.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="vg">pubkeyA13</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyI2</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA11</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA1</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA9</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA7</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyI10</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyI6</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyI8</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyA3</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA5</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyA15</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyI12</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyI4</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyI14</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+<span class="kd">const</span> <span class="vg">pubkeyI16</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyA</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1</span>
+<span class="kd">const</span> <span class="vg">pubkeyI</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809</span>
+
+<span class="kd">const</span> <span class="vg">sigA0</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span> <span class="c1">//add signature for output .</span>
+<span class="kd">const</span> <span class="vg">sigAFee</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span> <span class="c1">//add signature for output ..</span>
+
+<span class="kd">transaction</span> <span class="vg">Tinit</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="o">.:</span><span class="n">sigA0</span><span class="o">;</span> <span class="o">..:</span><span class="n">sigAFee</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0097</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA1</span><span class="o">,</span> <span class="n">pubkeyI2</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">||</span>
+ <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA3</span><span class="o">,</span> <span class="n">pubkeyI4</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">||</span>
+ <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA5</span><span class="o">,</span> <span class="n">pubkeyI6</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">))</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT1</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT1</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+
+<span class="kd">transaction</span> <span class="vg">T1</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span> <span class="n">sigAT1</span> <span class="n">sigIT1</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0094</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA7</span><span class="o">,</span> <span class="n">pubkeyI8</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT2</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT2</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+
+<span class="kd">transaction</span> <span class="vg">T2</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T1</span>@<span class="mi">0</span><span class="o">:</span> <span class="n">sigAT2</span> <span class="n">sigIT2</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="o">[</span> <span class="mi">0</span><span class="o">.</span><span class="mi">95455</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span><span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA9</span><span class="o">,</span> <span class="n">pubkeyI10</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)));</span>
+        <span class="mi">0</span><span class="o">.</span><span class="mi">05455</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span><span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA11</span><span class="o">,</span> <span class="n">pubkeyI12</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)))</span> <span class="o">]</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT3</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT3</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T3</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T2</span>@<span class="mi">0</span><span class="o">:</span>  <span class="n">sigAT3</span> <span class="n">sigIT3</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">95425</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT4</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT4</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T4</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T2</span>@<span class="mi">1</span><span class="o">:</span>  <span class="n">sigAT4</span> <span class="n">sigIT4</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">05425</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyI</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT5</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT5</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+
+<span class="kd">transaction</span> <span class="vg">T5</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span> <span class="n">sigAT5</span> <span class="n">sigIT5</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0094</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA13</span><span class="o">,</span> <span class="n">pubkeyI14</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT6</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT6</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+
+<span class="kd">transaction</span> <span class="vg">T6</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T5</span>@<span class="mi">0</span><span class="o">:</span> <span class="n">sigAT6</span> <span class="n">sigIT6</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="o">[</span> <span class="mi">1</span><span class="o">.</span><span class="mi">00455</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span><span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA11</span><span class="o">,</span> <span class="n">pubkeyI12</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)));</span>
+        <span class="mi">0</span><span class="o">.</span><span class="mi">00455</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="o">((</span><span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA15</span><span class="o">,</span> <span class="n">pubkeyI16</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)))</span> <span class="o">]</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT7</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT7</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T7</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T6</span>@<span class="mi">0</span><span class="o">:</span>  <span class="n">sigAT7</span> <span class="n">sigIT7</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">00425</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyI</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigx</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span> <span class="c1">//add signature for output ...</span>
+<span class="kd">const</span> <span class="vg">sigAT8</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT8</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+
+<span class="kd">transaction</span> <span class="vg">T8</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T6</span>@<span class="mi">1</span><span class="o">:</span> <span class="n">sigAT8</span> <span class="n">sigIT8</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">10425</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA9</span><span class="o">,</span> <span class="n">pubkeyI10</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT9</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT9</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T9</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T8</span>@<span class="mi">0</span><span class="o">:</span>  <span class="n">sigAT9</span> <span class="n">sigIT9</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">10395</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT10</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT10</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+
+<span class="kd">transaction</span> <span class="vg">T10</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">Tinit</span>@<span class="mi">0</span><span class="o">:</span> <span class="n">sigAT10</span> <span class="n">sigIT10</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0094</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA11</span><span class="o">,</span> <span class="n">pubkeyI12</span><span class="o">;</span> <span class="n">sA</span><span class="o">,</span> <span class="n">sI</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">const</span> <span class="vg">sigAT11</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+<span class="kd">const</span> <span class="vg">sigIT11</span> <span class="o">:</span> <span class="kt">signature</span> <span class="o">=</span> <span class="n">_</span>
+
+<span class="kd">transaction</span> <span class="vg">T11</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="o">[</span> <span class="n">T10</span>@<span class="mi">0</span><span class="o">:</span>  <span class="n">sigAT11</span> <span class="n">sigIT11</span> <span class="o">]</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0091</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyI</span><span class="o">;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="auction.html" class="btn btn-neutral float-right" title="Auction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tc.html" class="btn btn-neutral" title="Timed commitment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

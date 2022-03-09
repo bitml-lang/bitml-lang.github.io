@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BitML in a nutshell &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compiling BitML contracts" href="compiler.html" />
+    <link rel="prev" title="Getting started" href="installation.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BitML in a nutshell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#simple-payments">Simple payments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#procrastinating-payments">Procrastinating payments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authorizing-payments">Authorizing payments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#splitting-deposits">Splitting deposits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volatile-deposits">Volatile deposits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#revealing-secrets">Revealing secrets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>BitML in a nutshell</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/nutshell.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/nutshell.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="langname-in-a-nutshell">
+<span id="bitml-in-a-nuthsell"></span><h1>BitML in a nutshell<a class="headerlink" href="#langname-in-a-nutshell" title="Permalink to this headline">¶</a></h1>
+<p>BitML contracts allow two or more participants to exchange
+their bitcoins according to complex pre-agreed rules.
+Below we illustrate the primitives of BitML through a series of
+simple examples
+(see <a class="reference internal" href="index.html#ccs18" id="id1"><span>[CCS18]</span></a> for a reference to BitML syntax and semantics).</p>
+<p>The first step in designing a BitML contract is to declare the involved participants.
+For instance, we can declare three participants <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code> as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;029c5f6f5ef0095f547799cb7861488b9f4282140d59a6289fbc90c70209c1cced&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;0316589526daa876ef27937e48176da08fc95eaef7315fa20a07114d5fb8866553&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C&quot;</span> <span class="s">&quot;03c7e157beee3815300c678840988713c9928d986b26fe0dc2533f304c19268a2f&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each participant is associated to a public key: for instance, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>
+has the public key <code class="code bitml docutils literal notranslate"><span class="pre">&quot;029c...cced&quot;</span></code>.
+The command <code class="code bitml docutils literal notranslate"><span class="pre">(debug-mode)</span></code> is needed to generate auxiliary keys
+which are used by the BitML compiler,
+instead of declaring them as you are supposed to when executing a contract in
+a real life scenario.</p>
+<section id="simple-payments">
+<h2>Simple payments<a class="headerlink" href="#simple-payments" title="Permalink to this headline">¶</a></h2>
+<p>Assume that <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> simply wants to donate 1 BTC to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>.
+To this purpose, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> must first declare that she owns
+a transaction output with 1 BTC.
+We can define this transaction output as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">txA</span><span class="p">)</span> <span class="s">&quot;tx:02000000000102f28b8ec15a48abd9cda80d1c770ff9770dc0c549ddb1b8013b9e50a8799614aa000000001716001412a88716720982b693ab2bd2a2fcd4d98bdd2485feffffff08d59c3aeafd6003e6e099adde64f17d6ec7950619c22b50466281afa782e9d4000000001716001433845a8590dbf145b52bdd777103d1ddfdaa9cedfeffffff022fac1f000000000017a914e9f772646a0b6174c936806dab1b882e750ac04a8740420f00000000001976a914ded135b86a7ff97aece531c8b97dc8a3cb3ddc7488ac02473044022060135384eafe9a8021e8b8c46da20e7cd5713d581c3f79b1da3d2f7860a1bfed02206ca1ac1616d7ab778bcbb235b4b24286c2181ec171b8cadeaa9ee5f4f78fd330012102d5f8f263a81427330e7f26ba5832a2cd01e960bf145be2101bc0b6bb0fde8c2d0247304402200e02da2228774b47ff03a5a7c1bf1d070d0cec6cd9a08d6862e1855ba33dfb9f0220011511f10aaefbf402b2944b6a877c1ff9890a7fc3e266bbb74318b4540c555d012103ef2a573fbd46356dcbdbedcecc9aa25dcb500512e2be394297475ed157a9cfc6bdb51600@1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the definition above, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;02000000000102f28b...4297475ed157a9cfc6bdb51600&quot;</span></code>
+are the bytes of the serialized transaction, and the trailing <code class="code bitml docutils literal notranslate"><span class="pre">&quot;&#64;1&quot;</span></code> is the index of the output.</p>
+<p>The contract advertised by <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> is the following:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">))))</span>
+ <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The contract precondition <code class="code bitml docutils literal notranslate"><span class="pre">(pre</span> <span class="pre">(deposit</span> <span class="pre">&quot;A&quot;</span> <span class="pre">1</span> <span class="pre">(ref</span> <span class="pre">(txA))))</span></code>
+declares that <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>
+agrees to transfer the 1 BTC referenced by the transaction output <code class="code bitml docutils literal notranslate"><span class="pre">txA</span></code>
+under the control of the contract.
+The actual contract is <code class="code bitml docutils literal notranslate"><span class="pre">(withdraw</span> <span class="pre">&quot;B&quot;)</span></code>:
+this just transfers the funds deposited into the contract to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>.</p>
+<p>In the previous contract, the initial deposit has been provided by a transaction output;
+more in general, a contract can gather money from more than one transaction.
+For instance, assume that another participant <code class="code bitml docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code> wants to contribute 1 BTC to the donation.
+The contract precondition is modified as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;C&quot;</span> <span class="mi">1</span> <span class="s">&quot;tx:020000000193c18c921ed3947b862c746ddfe8a8b7459da00825822e09b95c61aaedc71dbf00000000e347304402204b77785e510ab83746732ce435e28a0e46d415ed0ebb8de407c45c66824530bf02202fdf08cd26b5ce376bcb215fe974dddc413be3b74b87e8beae27b1d812c3869d01473044022071b0ced4dd60799531eefe4e61892602637897a18f69f4e5cec22247c59b6c770220768ecc22e772477c8bbd762366d121b0b3d48a3b91334e1a369bbd848373fde3014c516b6b006c766c766b7c6b52210339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe121034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f80952aeffffffff01a0bb0d00000000001976a914ce07ee1448bbb80b38ae0c03b6cdeff40ff326ba88ac00000000@0&quot;</span><span class="p">))</span>
+ <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="procrastinating-payments">
+<h2>Procrastinating payments<a class="headerlink" href="#procrastinating-payments" title="Permalink to this headline">¶</a></h2>
+<p>Assume now that <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> wants to donate 1 BTC to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>,
+but only after a certain time <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code>.
+For instance, the 1 BTC could be a birthday present to be withdrawn
+only after the birthday date; or the amount of a rent to the landlord,
+to be paid only after the 1st of the month.
+We represent the time <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code> as a <a class="reference external" href="https://bitcoin.org/en/glossary/block-height">block height</a>.
+For instance, we set <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code> to 500000
+(note that the block at this height was actually mined on
+<a class="reference external" href="https://www.blockchain.com/btc/block-height/500000">2017-12-18</a>).</p>
+<p>To craft this contract we use the primitive <code class="code bitml docutils literal notranslate"><span class="pre">after</span> <span class="pre">height</span> <span class="pre">contract</span></code>,
+which locks the <code class="code bitml docutils literal notranslate"><span class="pre">contract</span></code> until
+the block at the given <code class="code bitml docutils literal notranslate"><span class="pre">height</span></code> is appended to the blockchain.
+We also reuse the transaction output <code class="code bitml docutils literal notranslate"><span class="pre">txA</span></code> from the previous example:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">t</span><span class="p">)</span> <span class="mi">500000</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">))))</span>
+ <span class="p">(</span><span class="k">after </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">t</span><span class="p">))</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>This contract ensures that only after
+the block at height <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code> has been appended to the blockchain,
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> will be able to redeem 1 BTC from the contract,
+by performing the action <code class="code bitml docutils literal notranslate"><span class="pre">(withdraw</span> <span class="pre">&quot;B&quot;)</span></code>.</p>
+<p>The following contract allows <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> to recover her deposit if
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> has not withdrawn within a given deadline <code class="code bitml docutils literal notranslate"><span class="pre">t1</span></code> &gt; <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code>:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">t</span><span class="p">)</span> <span class="mi">500000</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">t1</span><span class="p">)</span> <span class="mi">510000</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="nf">choice</span>
+        <span class="p">(</span><span class="k">after </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">t</span><span class="p">))</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">after </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">t1</span><span class="p">))</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>The contract allows two (mutually exclusive) behaviours:
+either <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> or <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can withdraw 1 BTC.
+Before the deadline <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code> no one can withdraw;
+after <code class="code bitml docutils literal notranslate"><span class="pre">t</span></code> (but before <code class="code bitml docutils literal notranslate"><span class="pre">t1</span></code>) only <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can withdraw,
+while after the <code class="code bitml docutils literal notranslate"><span class="pre">t1</span></code> both withdraw actions are enabled,
+so the first one who performs their withdraw will get the money.</p>
+</section>
+<section id="authorizing-payments">
+<h2>Authorizing payments<a class="headerlink" href="#authorizing-payments" title="Permalink to this headline">¶</a></h2>
+<p>Assume that <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> is willing to pay 1 BTC to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>,
+but only if an <code class="code bitml docutils literal notranslate"><span class="pre">&quot;Oracle&quot;</span></code> gives his authorization.
+We can use the authorization primitive <code class="code bitml docutils literal notranslate"><span class="pre">auth</span> <span class="pre">Participant</span> <span class="pre">Contract</span></code> as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">))))</span>
+ <span class="p">(</span><span class="k">auth </span><span class="s">&quot;Oracle&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>This contract ensures that <code class="code bitml docutils literal notranslate"><span class="pre">(withdraw</span> <span class="pre">&quot;B&quot;)</span></code>
+is performed whenever <code class="code bitml docutils literal notranslate"><span class="pre">&quot;Oracle&quot;</span></code> authorizes it.</p>
+<p>We can play with authorizations and summations to construct more complex
+contracts. For instance, assume we want to design an <em>escrow</em> contract, which
+allows <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> to buy an item from <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>, authorizing the payment only after she gets the
+item. Further, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can authorize a full refund to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, in case there is some problem
+with the item. A naïve attempt to model this contract is the following:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Naive-escrow</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">choice</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>If both participants are honest, everything goes smoothly: when <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> receives
+the item, she authorizes the payment to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>, otherwise <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> authorizes the refund.
+The problem with this contract is that, if neither <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> nor <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> give the authorization,
+the money in the contract is frozen. To cope with this issue, we can refine the
+escrow contract, by introducing a trusted arbiter <code class="code bitml docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code> which resolves the dispute:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Oracle-escrow</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">choice</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span> <span class="c1">; same as</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span> <span class="c1">; Naive-escrow</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;O&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;O&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">))))</span>
+ <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Oracle-escrow</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>The last two branches are used if neither <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> nor <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> give their authorizations: in
+this case, the arbiter chooses whether to authorize <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> or <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> to redeem the deposit.</p>
+</section>
+<section id="splitting-deposits">
+<h2>Splitting deposits<a class="headerlink" href="#splitting-deposits" title="Permalink to this headline">¶</a></h2>
+<p>In all the previous examples, the deposit within the contract is transferred to
+a single participant. More in general, deposits can be split in many parts, to
+be transferred to different participants. For instance, assume that <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> wants her
+1 BTC deposit to be transferred in equal parts to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B1&quot;</span></code> and to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B2&quot;</span></code>.
+We can model this behaviour as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Pay-split</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">split</span>
+    <span class="p">(</span><span class="mf">0.5</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B1&quot;</span><span class="p">))</span>
+    <span class="p">(</span><span class="mf">0.5</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B2&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>The split construct splits the contract in two or more parallel subcontracts,
+each with its own balance. Of course, the choice of their balances must be less
+than or equal to the deposit of the whole contract.</p>
+<p>We can use split together with the other primitives presented so far to
+craft more complex contracts. For instance, assume that <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> wants pay 0.9 BTC to
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>, routing the payment through an intermediary <code class="code bitml docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code> who can choose whether to
+authorize it (in this case retaining a 0.1 BTC fee), or not. Since <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> does not trust <code class="code bitml docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code>,
+she wants to use a contract to guarantee that: (i) if <code class="code bitml docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code> authorizes the payment
+then 0.9 BTC are transferred to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>; (ii) otherwise, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> does not lose money.
+We can model this behaviour as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA</span><span class="p">))))</span>
+ <span class="p">(</span><span class="nf">choice</span>
+   <span class="p">(</span><span class="k">auth </span><span class="s">&quot;I&quot;</span> <span class="p">(</span><span class="k">split </span><span class="p">(</span><span class="mf">0.1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;I&quot;</span><span class="p">))</span>
+                    <span class="p">(</span><span class="mf">0.9</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">after </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">d</span><span class="p">))</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>The first branch can only be taken if <code class="code bitml docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code> authorizes the payment: in this case,
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code> gets his fee, and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> gets his payment. Instead, if <code class="code bitml docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code> denies his authorization, then
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> can redeem her deposit after block height <code class="code bitml docutils literal notranslate"><span class="pre">d</span></code>.</p>
+</section>
+<section id="volatile-deposits">
+<h2>Volatile deposits<a class="headerlink" href="#volatile-deposits" title="Permalink to this headline">¶</a></h2>
+<p>So far, we have seen participants using persistent deposits, that are assimilated
+by the contract upon stipulation. Besides these, participants can also use volatile
+deposits, which are not assimilated upon stipulation. For instance:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA1</span><span class="p">)))</span>
+     <span class="p">(</span><span class="k">vol-deposit </span><span class="s">&quot;A&quot;</span> <span class="nv">x</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA2</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>gives <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> the possibility of contributing 1 BTC during the contract execution.
+However, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> can choose instead to spend her volatile deposit outside the contract.
+The variable <code class="code bitml docutils literal notranslate"><span class="pre">x</span></code> is a handle to the volatile deposit, which can be used as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Pay?</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">put </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Since <code class="code bitml docutils literal notranslate"><span class="pre">x</span></code> is not paid upfront, there is no guarantee that <code class="code bitml docutils literal notranslate"><span class="pre">x</span></code> will be
+available when the contract demands it, as <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> can spend it for other purposes.</p>
+<p>Volatile deposits can be exploited within more complex contracts, to handle
+situations where a participant wants to add some funds to the contract. For
+instance, assume a scenario where <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A1&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A2&quot;</span></code> want to give <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> 2 BTC as a present,
+paying 1 BTC each. However, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A2&quot;</span></code> is not sure a priori she will be able to pay, because
+she may need her 1 BTC for more urgent purposes: in this case, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A1&quot;</span></code> is willing to
+pay an extra bitcoin. We can model this scenario as follows: <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A1&quot;</span></code> puts 2 BTC as a
+persistent deposit, while <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A2&quot;</span></code> makes available a volatile deposit <code class="code bitml docutils literal notranslate"><span class="pre">x</span></code> of 1 BTC:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A1&quot;</span> <span class="mi">2</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA1</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">vol-deposit </span><span class="s">&quot;A2&quot;</span> <span class="nv">x</span> <span class="mi">1</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">txA2</span><span class="p">))))</span>
+ <span class="p">(</span><span class="nf">choice</span>
+   <span class="p">(</span><span class="k">put </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="k">split </span><span class="p">(</span><span class="mi">2</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))</span>
+                   <span class="p">(</span><span class="mi">1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A1&quot;</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">after </span><span class="mi">700000</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>In the first branch, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A2&quot;</span></code> puts 1 BTC in the contract, and the balance is split
+between <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> (who takes 2 BTC, as expected), and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A1&quot;</span></code>
+(who takes her extra deposit back).
+The second branch is enabled after <code class="code bitml docutils literal notranslate"><span class="pre">d</span></code>, and it deals with the case where
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;A2&quot;</span></code> has not put her deposit by such deadline. In this case, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can redeem 2 BTC,
+while <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A2&quot;</span></code> loses the extra deposit. Note that, in both cases, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> will receive 2 BTC.</p>
+</section>
+<section id="revealing-secrets">
+<h2>Revealing secrets<a class="headerlink" href="#revealing-secrets" title="Permalink to this headline">¶</a></h2>
+<p>A useful feature of Bitcoin smart contracts is the possibility for a participant
+to choose a secret, and unblock some action only when the secret is revealed.
+Further, different actions can be enabled according to the length of the secret.
+Secrets must be declared in the contract precondition, as follows:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">secret </span><span class="s">&quot;A&quot;</span> <span class="nv">a</span> <span class="s">&quot;f9292914bfd27c426a23465fc122322abbdb63b7&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> is the participant who owns the secret, <code class="code bitml docutils literal notranslate"><span class="pre">a</span></code> is its <em>name</em>,
+and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;f9292914bfd27c426a23465fc122322abbdb63b7&quot;</span></code> is its <code class="code balzac docutils literal notranslate"><span class="pre">hash160</span></code> hash.
+We never denote the value of the secret
+itself. A basic contract which exploits this feature is the following:</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">PaySecret</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">revealif </span><span class="p">(</span><span class="nf">a</span><span class="p">)</span> <span class="p">(</span><span class="k">pred </span><span class="p">(</span><span class="nf">&gt;</span> <span class="nv">a</span> <span class="mi">1</span><span class="p">))</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>This contract asks <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> to commit to a secret of length greater than one,
+as stated in the predicate <code class="code bitml docutils literal notranslate"><span class="pre">(pred</span> <span class="pre">(&gt;</span> <span class="pre">a</span> <span class="pre">1))</span></code>.
+After revealing <code class="code bitml docutils literal notranslate"><span class="pre">a</span></code>, it allows
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> to redeem 1 BTC upon revealing the secret. Until then, the deposit is frozen.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To reveal a secret without imposing a predicate use <code class="code bitml docutils literal notranslate"><span class="pre">(reveal)</span></code>.
+E.g.: <code class="code bitml docutils literal notranslate"><span class="pre">(reveal</span> <span class="pre">(a)</span> <span class="pre">(withdraw</span> <span class="pre">&quot;A&quot;))</span></code></p>
+</div>
+<p>Note that we never refer to the value itself of the secret, rather we use its length.
+After compiling to Bitcoin, the actual length of the secret will be increased by η,
+where η is a security parameter, large enough to avoid brute-force preimage attack.</p>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="compiler.html" class="btn btn-neutral float-right" title="Compiling BitML contracts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

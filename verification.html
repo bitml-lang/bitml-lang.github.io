@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Verifying BitML contracts &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Two players lottery (with collaterals)" href="2p-lottery.html" />
+    <link rel="prev" title="Compiling BitML contracts" href="compiler.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Verifying BitML contracts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#liquidity">Liquidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#liquidity-with-strategies">Liquidity with strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quantitative-liquidity">Quantitative liquidity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-ltl-queries">Custom LTL queries</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="court-seized-btc.html">Court-seized bitcoins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Verifying BitML contracts</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/verification.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/verification.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="verifying-langname-contracts">
+<h1>Verifying BitML contracts<a class="headerlink" href="#verifying-langname-contracts" title="Permalink to this headline">¶</a></h1>
+<p>Other than compiling contracts to transactions, the BitML toolchain
+allows to verify contracts before executing them.</p>
+<p>A desirable property of smart contracts is <strong>liquidity</strong>,
+which requires that the contract balance is always eventually transferred to some participant.
+In a non-liquid contract, funds can be frozen forever, unavailable to anyone, hence effectively destroyed.
+There are many possible flavours of liquidity, depending e.g. on which
+participants are assumed to be honest, and on which are their strategies.</p>
+<p>The toolchain can also verify arbitrary security proprieties,
+expressed as LTL queries.</p>
+<section id="liquidity">
+<h2>Liquidity<a class="headerlink" href="#liquidity" title="Permalink to this headline">¶</a></h2>
+<p>In the following contract, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> contribute 1 BTC each
+for a donation of 2 BTC to either <code class="code bitml docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code> or <code class="code bitml docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code>.
+We want to check if the contract is liquid or not, without supplying any strategy,
+i.e. without knowing which branch <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> will authorize.</p>
+<p>This flavour of liquidity is called <strong>strategy-less</strong>.
+Intuitively, it corresponds to check
+if the contract is liquid for any possible strategy of any participants,
+whether they are honest or not.</p>
+<p>To check the liquidity of the following contract,
+we add <code class="code bitml docutils literal notranslate"><span class="pre">(check-liquid)</span></code> at its end.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C&quot;</span> <span class="s">&quot;034f5ca30056b9dd89132ca8c7583e6d82b69bc17bb2c1dfef9dea9c3467631e6b&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;D&quot;</span> <span class="s">&quot;037b60c121050e1fa6e7d5cd299ecc66d87330b2996567004f831c63ef0e2a157e&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="nf">pre</span>
+   <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:2e647d8566f00a08d276488db4f4e2d9f82dd82ef161c2078963d8deb2965e35@1&quot;</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:625bc69c467b33e2ad70ea2817874067604eb42dd5835403f54fb6028bc70168@0&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="nf">choice</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;C&quot;</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;D&quot;</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="nf">check-liquid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>During the compilation of the contract, the tool-chain checks if it is liquid. The result is printed before the transactions in a comment-box.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-liquid)</span>
+
+<span class="cm">Result: false</span>
+<span class="cm">counterexample({[0 | nil | &#39;xconf U empty | empty] &lt; (    A, B) : withdraw C + (A, B) : withdraw D, 100000000 satoshi &gt; &#39;xconf,</span>
+<span class="cm">&#39;C-LockAuthControl} {{A lock withdraw C in &#39;xconf}[0 | nil | &#39;xconf U empty    | empty] &lt; Lock((A, B) : withdraw C) + (A, B) : withdraw D, 100000000 satoshi &gt;</span>
+<span class="cm">&#39;xconf,&#39;Rifl} {{A lock withdraw D in &#39;xconf}[0 | nil | &#39;xconf U empty |    empty] &lt; Lock((A, B) : withdraw C) + Lock((A, B) : withdraw D), 100000000    satoshi &gt; &#39;xconf,&#39;Finalize}, {[0 | nil | &#39;xconf U empty | empty] &lt; Lock((A, B)    : withdraw C) + Lock((A, B) : withdraw D), 100000000 satoshi &gt; &#39;xconf,    solution})</span>
+<span class="cm">Model checking time: 143.0 ms</span>
+<span class="cm">=============================================================================*/</span>
+</pre></div>
+</div>
+<p>As we can see, the contract is not liquid.
+In fact, In order to unlock the funds, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> must agree on the recipient of the donation,
+by giving their authorization on the same branch. This contract would be liquid
+only by assuming the cooperation between <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>: indeed, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> alone cannot
+guarantee that the 2 BTC will eventually be donated, as <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can choose a different
+recipient, or even refuse to give any authorization.</p>
+<p>We can try to modify the contract to handle this situations by adding a timeout branch
+with <code class="code bitml docutils literal notranslate"><span class="pre">(after</span> <span class="pre">700000</span> <span class="pre">(split</span> <span class="pre">(1</span> <span class="pre">-&gt;</span> <span class="pre">(withdraw</span> <span class="pre">&quot;A&quot;))</span> <span class="pre">(1</span> <span class="pre">-&gt;</span> <span class="pre">(withdraw</span> <span class="pre">&quot;B&quot;))))</span></code>.
+The new branch locks the contract until the block number 700000 is appended to the blockchain,
+modeling a delay.
+After the corresponding time passes, it unlocks and returns their deposits to <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">contract</span>
+  <span class="p">(</span><span class="nf">pre</span>
+    <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:2e647d8566f00a08d276488db4f4e2d9f82dd82ef161c2078963d8deb2965e35@1&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:625bc69c467b33e2ad70ea2817874067604eb42dd5835403f54fb6028bc70168@0&quot;</span><span class="p">))</span>
+
+  <span class="p">(</span><span class="nf">choice</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;C&quot;</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;D&quot;</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">after </span><span class="mi">700000</span> <span class="p">(</span><span class="k">split </span><span class="p">(</span><span class="mi">1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span> <span class="p">(</span><span class="mi">1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))))</span>
+
+  <span class="p">(</span><span class="nf">check-liquid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now the contract is liquid, and the toolchain confirms it.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-liquid)</span>
+
+<span class="cm">Result: true</span>
+<span class="cm">Model checking time: 322.0 ms</span>
+<span class="cm">=============================================================================*/</span>
+</pre></div>
+</div>
+</section>
+<section id="liquidity-with-strategies">
+<h2>Liquidity with strategies<a class="headerlink" href="#liquidity-with-strategies" title="Permalink to this headline">¶</a></h2>
+<p>In the following contract, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> can reveal her secret and redeem its deposit.
+Otherwise, after a certain amount of time the block number 700000 will be appended to the blockchain,
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can redeem <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>’s deposit, after providing his authorization to do so.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="nf">pre</span>
+  <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:2e647d8566f00a08d276488db4f4e2d9f82dd82ef161c2078963d8deb2965e35@1&quot;</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">secret </span><span class="s">&quot;A&quot;</span> <span class="nv">a</span> <span class="s">&quot;f9292914bfd27c426a23465fc122322abbdb63b7&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="nf">choice</span>
+  <span class="p">(</span><span class="k">reveal </span><span class="p">(</span><span class="nf">a</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">after </span><span class="mi">700000</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="nf">check-liquid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We start by checking the strategy-less liquidity.
+As the result of the verification shows, the contract is not liquid.
+This is because if neither <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> reveals her secret nor <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> gives his authorization,
+the funds will be stuck forever.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-liquid)</span>
+
+<span class="cm">Result: false</span>
+<span class="cm">Secrets: a:1</span>
+
+<span class="cm">counterexample({[0 | 700000 | &#39;xconf U empty | B, A] &lt;    B : after 700000 : withdraw B + put empty reveal a if True . withdraw A,    100000000 satoshi &gt; &#39;xconf | {A : a # 1},&#39;C-LockAuthRev} {{A lock-reveal a}[0 |    700000 | &#39;xconf U empty | B, A] Lock({A : a # 1}) | &lt; B : after 700000 :    withdraw B + put empty reveal a if True . withdraw A, 100000000 satoshi &gt;    &#39;xconf,&#39;Rifl} {{B lock after 700000 : withdraw B in &#39;xconf}[0 | 700000 |    &#39;xconf U empty | B, A] Lock({A : a # 1}) | &lt; Lock(B : after 700000 :    withdraw B) + put empty reveal a if True . withdraw A, 100000000 satoshi &gt;    &#39;xconf,&#39;Rifl} {{delta 700000}[700000 | nil | &#39;xconf U empty | B, A] Lock({A    : a # 1}) | &lt; Lock(B : after 700000 : withdraw B) + put empty reveal a if    True . withdraw A, 100000000 satoshi &gt; &#39;xconf,&#39;Finalize}, {[700000 | nil |    &#39;xconf U empty | B, A] Lock({A : a # 1}) | &lt; Lock(B : after 700000 :    withdraw B) + put empty reveal a if True . withdraw A, 100000000 satoshi &gt;    &#39;xconf,solution})</span>
+<span class="cm">Model checking time: 104.0 ms</span>
+<span class="cm">=============================================================================*/</span>
+</pre></div>
+</div>
+<p>The BitML toolchain allows us to specify the intended behaviour of a participant, called <strong>strategy</strong>.
+The security propriety is verified with respect to the specified strategies.</p>
+<p>We check if the contract is liquid if the strategy of <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>
+consists in revealing her secret, expressed by <code class="code bitml docutils literal notranslate"><span class="pre">(strategy</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(do-reveal</span> <span class="pre">a)))</span></code>
+as parameter of <code class="code bitml docutils literal notranslate"><span class="pre">(check-liquid</span> <span class="pre">Strategy</span> <span class="pre">...)</span></code>.</p>
+<p>We also check the liquidity if <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> authorizes the second branch of the contract,
+with the strategy <code class="code bitml docutils literal notranslate"><span class="pre">(strategy</span> <span class="pre">&quot;B&quot;</span> <span class="pre">(do-auth</span> <span class="pre">(auth</span> <span class="pre">&quot;B&quot;(after</span> <span class="pre">700000</span> <span class="pre">(withdraw</span> <span class="pre">&quot;B&quot;)))))</span></code>.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+  <span class="p">(</span><span class="nf">pre</span>
+   <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:2e647d8566f00a08d276488db4f4e2d9f82dd82ef161c2078963d8deb2965e35@1&quot;</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">secret </span><span class="s">&quot;A&quot;</span> <span class="nv">a</span> <span class="s">&quot;f9292914bfd27c426a23465fc122322abbdb63b7&quot;</span><span class="p">))</span>
+
+  <span class="p">(</span><span class="nf">choice</span>
+   <span class="p">(</span><span class="k">reveal </span><span class="p">(</span><span class="nf">a</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+   <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">after </span><span class="mi">700000</span>  <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))))</span>
+
+  <span class="p">(</span><span class="nf">check-liquid</span>
+    <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="k">do-reveal </span><span class="nv">a</span><span class="p">)))</span>
+
+  <span class="p">(</span><span class="nf">check-liquid</span>
+    <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">do-auth </span><span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">after </span><span class="mi">700000</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))))))</span>
+</pre></div>
+</div>
+<p>For both strategies, the contract is liquid.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-liquid (strategy A (do-reveal a)))</span>
+
+<span class="cm">Result: true</span>
+
+<span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-liquid (strategy B (do-auth (auth B (after 700000 (withdraw B))))))</span>
+
+<span class="cm">Result: true</span>
+<span class="cm">Model checking time: 270.0 ms</span>
+<span class="cm">=============================================================================*/</span>
+</pre></div>
+</div>
+</section>
+<section id="quantitative-liquidity">
+<h2>Quantitative liquidity<a class="headerlink" href="#quantitative-liquidity" title="Permalink to this headline">¶</a></h2>
+<p>The previous flavours of liquidity require that no funds remain frozen
+within the contract. However, in some cases a participant could accept the fact that a
+portion of the funds remain frozen, especially when these funds would be ideally
+assigned to other participants.</p>
+<p>In the following contract, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> put 1 BTC each.
+Each of them will get their own BTC back if they reveal their secret.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+  <span class="p">(</span><span class="nf">pre</span>
+   <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:2e647d8566f00a08d276488db4f4e2d9f82dd82ef161c2078963d8deb2965e35@1&quot;</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">deposit </span><span class="s">&quot;B&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:0f795bda36ac661f2b9a626d46049bc14b95b2d0e69f5fb7ccc4c3d767db9f34@1&quot;</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">secret </span><span class="s">&quot;A&quot;</span> <span class="nv">a</span> <span class="s">&quot;f9292914bfd27c426a23465fc122322abbdb63b7&quot;</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">secret </span><span class="s">&quot;B&quot;</span> <span class="nv">b</span> <span class="s">&quot;9804ebb0fc4a8329981dd33aaff32b6cb579580a&quot;</span><span class="p">))</span>
+
+  <span class="p">(</span><span class="nf">split</span>
+   <span class="p">(</span><span class="mi">1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">reveal </span><span class="p">(</span><span class="nf">a</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">)))</span>
+   <span class="p">(</span><span class="mi">1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">reveal </span><span class="p">(</span><span class="nf">b</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">))))</span>
+
+   <span class="p">(</span><span class="k">check </span><span class="s">&quot;A&quot;</span> <span class="k">has-more-than </span><span class="mi">1</span>
+    <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="k">do-reveal </span><span class="nv">a</span><span class="p">)))))</span>
+</pre></div>
+</div>
+<p>In this setting, <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> is interested in checking if she will get back her bitcoin,
+assuming that she reveals her secret. We check it using <code class="code bitml docutils literal notranslate"><span class="pre">(check</span> <span class="pre">&quot;A&quot;</span> <span class="pre">has-more-than</span> <span class="pre">1</span> <span class="pre">(strategy</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(do-reveal</span> <span class="pre">a)))</span></code>.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check A has-more-than 1 (strategy A (do-reveal a)))</span>
+
+<span class="cm">Result: true</span>
+<span class="cm">Model checking time: 134.0 ms</span>
+<span class="cm">=============================================================================*/</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-ltl-queries">
+<h2>Custom LTL queries<a class="headerlink" href="#custom-ltl-queries" title="Permalink to this headline">¶</a></h2>
+<p>The following contract is a <em>timed commitment</em>,
+where <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> wants to choose a secret <code class="code balzac docutils literal notranslate"><span class="pre">a</span></code>,
+and reveal it before the deadline <code class="code balzac docutils literal notranslate"><span class="pre">d</span></code>;
+if <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> does not reveal the secret within <code class="code balzac docutils literal notranslate"><span class="pre">d</span></code>,
+<code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> can redeem the 1 BTC deposit as a compensation.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;029c5f6f5ef0095f547799cb7861488b9f4282140d59a6289fbc90c70209c1cced&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;022c3afb0b654d3c2b0e2ffdcf941eaf9b6c2f6fcf14672f86f7647fa7b817af30&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">d</span><span class="p">)</span> <span class="mi">700000</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txA@0&quot;</span><span class="p">)(</span><span class="k">secret </span><span class="s">&quot;A&quot;</span> <span class="nv">a</span> <span class="s">&quot;f9292914bfd27c426a23465fc122322abbdb63b7&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="k">choice </span><span class="p">(</span><span class="k">reveal </span><span class="p">(</span><span class="nf">a</span><span class="p">)</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;A&quot;</span><span class="p">))</span>
+      <span class="p">(</span><span class="k">after </span><span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">d</span><span class="p">))</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;B&quot;</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="k">check-query </span><span class="s">&quot;[]&lt;&gt; (a revealed =&gt; A has-deposit&gt;= 100000000 satoshi)&quot;</span><span class="p">)</span>
+
+ <span class="p">(</span><span class="k">check-query </span><span class="s">&quot;[]&lt;&gt; (a revealed \\/ B has-deposit&gt;= 100000000 satoshi)&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The BitML toolchain allows us to check custom LTL properties,
+tailored specifically for the contract being verified, using <code class="code bitml docutils literal notranslate"><span class="pre">(check-query</span> <span class="pre">&quot;query&quot;)</span></code>.</p>
+<p>In the timed commitment contract, we want the following two properties to be satisfied.</p>
+<ul class="simple">
+<li><p>If <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> reveal her secret, she will get back her deposit.
+We check this property with <code class="code bitml docutils literal notranslate"><span class="pre">(check-query</span> <span class="pre">&quot;[]&lt;&gt;</span> <span class="pre">(a</span> <span class="pre">revealed</span> <span class="pre">=&gt;</span> <span class="pre">A</span> <span class="pre">has-deposit&gt;=</span> <span class="pre">100000000</span> <span class="pre">satoshi)&quot;)</span></code>.</p></li>
+<li><p>Either <code class="code bitml docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> gets to know the secret, or he will get the bitcoin as compensation.
+We check this property with <code class="code bitml docutils literal notranslate"><span class="pre">(check-query</span> <span class="pre">&quot;[]&lt;&gt;</span> <span class="pre">(a</span> <span class="pre">revealed</span> <span class="pre">\/</span> <span class="pre">B</span> <span class="pre">has-deposit&gt;=</span> <span class="pre">100000000</span> <span class="pre">satoshi)&quot;))</span></code>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to the internal representation of numbers in the model check, all BTC values have to be expressed in <strong>satoshi</strong> when checking custom LTL queries.</p>
+</div>
+<p>The result is true for both queries:</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-query [] (a revealed =&gt; &lt;&gt; A has-deposit&gt;= 100000000 satoshi))</span>
+
+<span class="cm">Result: true</span>
+
+<span class="cm">/*=============================================================================</span>
+<span class="cm">Model checking result for (check-query []&lt;&gt; (a revealed \/ B has-deposit&gt;= 100000000 satoshi))</span>
+
+<span class="cm">Result: true</span>
+<span class="cm">Model checking time: 408.0 ms</span>
+<span class="cm">=============================================================================*/</span>
+</pre></div>
+</div>
+<p>The first LTL property has the same semantic as checking the quantitative liquidity of 1 BTC
+if the strategy of <code class="code bitml docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> is to reveal her secret, or
+<code class="code bitml docutils literal notranslate"><span class="pre">(check</span> <span class="pre">&quot;A&quot;</span> <span class="pre">has-more-than</span> <span class="pre">1</span> <span class="pre">(strategy</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(do-reveal</span> <span class="pre">a)))</span></code>.
+Instead, the second LTL property cannot be expressed as a combination of liquidity and strategies.</p>
+<p>Other that <code class="code balzac docutils literal notranslate"><span class="pre">revealed</span></code> and <code class="code balzac docutils literal notranslate"><span class="pre">has-deposit&gt;=</span></code>, you can express your LTL properties with <code class="code balzac docutils literal notranslate"><span class="pre">has-deposit</span></code>, and <code class="code balzac docutils literal notranslate"><span class="pre">has-deposit&lt;=</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="2p-lottery.html" class="btn btn-neutral float-right" title="Two players lottery (with collaterals)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="compiler.html" class="btn btn-neutral" title="Compiling BitML contracts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>

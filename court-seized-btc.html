@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Court-seized bitcoins &mdash; BitML 2022-03-09_080234 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="More contracts" href="more-contracts.html" />
+    <link rel="prev" title="Auction" href="auction.html" />
+     
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BitML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">BitML Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nutshell.html">BitML in a nutshell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiling BitML contracts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verifying BitML contracts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Smart contracts</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="2p-lottery.html">Two players lottery (with collaterals)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tc.html">Timed commitment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="american-option.html">American Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auction.html">Auction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Court-seized bitcoins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1-basic-contract">Step 1 - Basic contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2-extend-contract">Step 2 - Extend contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3-the-final-boss">Step 3 - The final boss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extra-step-working-with-balzac-transactions">Extra step - working with Balzac transactions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="more-contracts.html">More contracts</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BitML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Court-seized bitcoins</li>
+    
+    
+  <li class="wy-breadcrumbs-aside">
+    
+      
+        
+          <a target="_blank" href="https://github.com/bitml-lang/bitml-doc/blob/master/source/court-seized-btc.rst" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+      
+        <a target="_blank" href="_sources/court-seized-btc.rst.txt" rel="nofollow"> View page source</a>
+      
+    
+  </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="court-seized-bitcoins">
+<h1>Court-seized bitcoins<a class="headerlink" href="#court-seized-bitcoins" title="Permalink to this headline">¶</a></h1>
+<p>This series of smart contracts
+is designed to be used in the hypothetical case
+where an amount of bitcoins,
+seized from someone suspected of illegal activities,
+is meant to be managed on-chain.</p>
+<p>Recently, an italian court <a class="reference external" href="https://news.bitcoin.com/bitgrail-bitcoin-assets-taken-by-italian-government-victims-still-fuming/">seized an amount of bitcoins</a>,
+but, needless to say, the case was not handled with a smart contract.</p>
+<section id="step-1-basic-contract">
+<h2>Step 1 - Basic contract<a class="headerlink" href="#step-1-basic-contract" title="Permalink to this headline">¶</a></h2>
+<p>In the basic contract, a jury decides if the defendant is innocent.
+If they rule in favour of the defendant,
+the seized bitcoins must return to the him.
+There is no need for the entire jury to judge the defendant innocent, the majority of members is sufficient.</p>
+<p>Actors:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>: members of the jury</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: defendant</p></li>
+</ul>
+</div></blockquote>
+<p>The contract implements the flow described above.</p>
+<p>We also verify that if two jurors agree to return the bitcoins to <code class="docutils literal notranslate"><span class="pre">S</span></code>,
+the contract is liquid.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;021927aa11df2776adc8fde8f36c4f7116dbfb466d6c2cd500ae3eabc0fcfb0a33&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;S&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f829&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:something@0&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="nf">choice</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;S&quot;</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;S&quot;</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;S&quot;</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="nf">check-liquid</span>
+  <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="nf">do-auth</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="nf">do-auth</span><span class="p">)))</span>
+ <span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you only care if a participant authorizes something, and not what particular contract she authorize,
+you can omit the contract from the strategy.
+Example: in <code class="code bitml docutils literal notranslate"><span class="pre">(strategy</span> <span class="pre">&quot;A&quot;</span> <span class="pre">(do-auth</span> <span class="pre">(withdraw</span> <span class="pre">&quot;S&quot;)))</span></code>, you can omit <code class="code bitml docutils literal notranslate"><span class="pre">(withdraw</span> <span class="pre">&quot;S&quot;)</span></code>.</p>
+</div>
+</section>
+<section id="step-2-extend-contract">
+<h2>Step 2 - Extend contract<a class="headerlink" href="#step-2-extend-contract" title="Permalink to this headline">¶</a></h2>
+<p>Actors:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>: jurors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: defendant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: storage</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cur</span></code>: curator</p></li>
+</ul>
+</div></blockquote>
+<p>The contract is extended with one more step.
+After two jurors agree that the defendant is innocent, the balance is split in two parts:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0.9 BTC, which can return to the defendant after block 160000000. At any time before the deadline, the curator can oppose the jury decision and send the bitcoins to the the trusted storage service</p></li>
+<li><p>0.1 BTC, which goes to the curator as a service fee.</p></li>
+</ul>
+</div></blockquote>
+<p>We verify that: if two members of the jury and the curator agree to return the bitcoins to <code class="docutils literal notranslate"><span class="pre">S</span></code>,
+the contract is liquid;
+the curator gets 0.1 BTC if two members of the jury agree.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;021927aa11df2776adc8fde8f36c4f7116dbfb466d6c2cd500ae3eabc0fcfb0a33&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;T&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f819&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;Cur&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f819&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;S&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f829&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Veto</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">split</span>
+   <span class="p">(</span><span class="mf">0.1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;Cur&quot;</span><span class="p">))</span>
+   <span class="p">(</span><span class="mf">0.9</span> <span class="k">-&gt; </span><span class="p">(</span><span class="nf">choice</span>
+            <span class="p">(</span><span class="k">auth </span><span class="s">&quot;Cur&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;T&quot;</span><span class="p">))</span>
+            <span class="p">(</span><span class="k">after </span><span class="mi">10</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;S&quot;</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:something@0&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="nf">choice</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Veto</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Veto</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Veto</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="nf">check-liquid</span>
+  <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="nf">do-auth</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="nf">do-auth</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="k">check </span><span class="s">&quot;Cur&quot;</span> <span class="k">has-at-least </span><span class="mf">0.1</span>
+        <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;A&quot;</span> <span class="p">(</span><span class="nf">do-auth</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">strategy </span><span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="nf">do-auth</span><span class="p">)))</span>
+ <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-the-final-boss">
+<h2>Step 3 - The final boss<a class="headerlink" href="#step-3-the-final-boss" title="Permalink to this headline">¶</a></h2>
+<p>Actors:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A1</span></code>, <code class="docutils literal notranslate"><span class="pre">B1</span></code>, <code class="docutils literal notranslate"><span class="pre">C1</span></code>: jurors of the first jury</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A2</span></code>, <code class="docutils literal notranslate"><span class="pre">B2</span></code>, <code class="docutils literal notranslate"><span class="pre">C2</span></code>: jurors of the second jury</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: defendant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cur</span></code>: curator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: storage</p></li>
+</ul>
+</div></blockquote>
+<p>This contract is similar to the second one, but if the curator opposes the decision of the jury,
+there is another round of judgment. The second round is performed by a second jury.
+If the curator opposes the decision of the second jury, the seized bitcoin goes to the trusted storage service.</p>
+<div class="highlight-bitml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">bitml</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;021927aa11df2776adc8fde8f36c4f7116dbfb466d6c2cd500ae3eabc0fcfb0a33&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;A1&quot;</span> <span class="s">&quot;0339bd7fade9167e09681d68c5fc80b72166fe55bbb84211fd12bde1d57247fbe1&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;B1&quot;</span> <span class="s">&quot;021927aa11df2776adc8fde8f36c4f7116dbfb466d6c2cd500ae3eabc0fcfb0a33&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;C1&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f809&quot;</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;Cur&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f819&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;S&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f829&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="k">participant </span><span class="s">&quot;T&quot;</span> <span class="s">&quot;034a7192e922118173906555a39f28fa1e0b65657fc7f403094da4f85701a5f229&quot;</span><span class="p">)</span>
+
+
+<span class="p">(</span><span class="nf">debug-mode</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Round1</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">split</span>
+   <span class="p">(</span><span class="mf">0.1</span> <span class="k">-&gt; </span><span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;Cur&quot;</span><span class="p">))</span>
+   <span class="p">(</span><span class="mf">0.9</span> <span class="k">-&gt; </span><span class="p">(</span><span class="nf">choice</span>
+            <span class="p">(</span><span class="k">auth </span><span class="s">&quot;Cur&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Round2</span><span class="p">)))</span>
+            <span class="p">(</span><span class="k">after </span><span class="mi">10</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;S&quot;</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Round2</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">tau </span><span class="p">(</span><span class="nf">choice</span>
+        <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Veto</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Veto</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Veto</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="nf">define</span> <span class="p">(</span><span class="nf">Veto</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">tau </span><span class="p">(</span><span class="nf">choice</span>
+        <span class="p">(</span><span class="k">auth </span><span class="s">&quot;Cur&quot;</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;T&quot;</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">after </span><span class="mi">20</span> <span class="p">(</span><span class="k">withdraw </span><span class="s">&quot;S&quot;</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">contract</span>
+ <span class="p">(</span><span class="k">pre </span><span class="p">(</span><span class="k">deposit </span><span class="s">&quot;A&quot;</span> <span class="mi">1</span> <span class="s">&quot;txid:something@0&quot;</span><span class="p">))</span>
+
+ <span class="p">(</span><span class="nf">choice</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;B&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Round1</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;A&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Round1</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">auth </span><span class="s">&quot;B&quot;</span> <span class="s">&quot;C&quot;</span> <span class="p">(</span><span class="k">ref </span><span class="p">(</span><span class="nf">Round1</span><span class="p">))))</span>
+
+ <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="extra-step-working-with-balzac-transactions">
+<h2>Extra step - working with Balzac transactions<a class="headerlink" href="#extra-step-working-with-balzac-transactions" title="Permalink to this headline">¶</a></h2>
+<p>In this last step, we implement a set of functionalities
+which is not expressible in BitML.
+Hence, we have to work with low-level <a class="reference external" href="https://editor.balzac-lang.xyz/">Balzac</a> transactions.</p>
+<p>Transaction <code class="docutils literal notranslate"><span class="pre">TInit</span></code> locks the seized bitcoin.
+It can be redeemed supplying two out of three
+signatures of the jurors AND the signature of the curator, but only after <code class="docutils literal notranslate"><span class="pre">2019-06-14</span></code>.
+The transaction can also be redeemed by the curator alone, so she has until Friday to oppose the decision of the jury.
+The identity of the defendant is not known in advance,
+so his public key must be a parameter of the transaction that returns the seized bitcoin to him.</p>
+<p>Transaction <code class="docutils literal notranslate"><span class="pre">T1</span></code> returns the seized bitcoin to the defendant.
+Note that we don’t know yet his identity, so we supply his
+public key as a parameter.</p>
+<p>Transaction <code class="docutils literal notranslate"><span class="pre">T2</span></code> can be used by the Curator to move the bitcoin directly to the trusted storage service.</p>
+<div class="highlight-balzac notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="vg">deadline</span> <span class="o">=</span> <span class="mi">2019-06-14</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyB</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">03cf4d421345caf86c64554b3b5bd25346a115404977f82de81d281a2825629e0d</span>
+<span class="kd">const</span> <span class="vg">pubkeyA</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">02c44cefb7238a9c0be51d2e7a84ae7cde17af2280b74971ac90a98d0eb1718c99</span>
+<span class="kd">const</span> <span class="vg">pubkeyC</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">03b6ef11dfdb271265c814938e17b9a53100651741f99f3b59a3291a79f665ae78</span>
+<span class="kd">const</span> <span class="vg">pubkeyCur</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">031816ff0d211cc5d1a622777a6e0b10c0b47c43878698e8c515c129ba9ad6e8a9</span>
+<span class="kd">const</span> <span class="vg">pubkeyCur2</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">031e07b49510143758597198e5f86bebf26ab453446583a0ea8c8954aaae2f06e3</span>
+
+<span class="kd">const</span> <span class="vg">pubkeyT</span> <span class="o">=</span> <span class="kp">pubkey:</span><span class="l">03860d4170fe9ad3f474e18c897a12c1cb3bdeb4bfa2ce6f7c8d99bc81f5c9cef1</span>
+
+<span class="kd">const</span> <span class="vg">privKeyA</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cW85H1zXaQcuv3xbVwJYV2fk53R93RyWxr6haLQXg6CCcdYE6Hwp</span>
+<span class="kd">const</span> <span class="vg">privKeyB</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cSaAjg2jRhatr4tjVQ2ax9pe5tH2gR8vAirLVnPtPqm22upvfSGe</span>
+<span class="kd">const</span> <span class="vg">privKeyC</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cN14mnfwoF1y4zFkCQXbyf2C7GHYwxpKDbGRiTsusgBhz2fwxajq</span>
+<span class="kd">const</span> <span class="vg">privKeyCur</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cPkoJhyv4tXPPNmB8YWeTMHEygnLnWhJwRT4J1BFF16mn6j22qDy</span>
+<span class="kd">const</span> <span class="vg">privKeyCur2</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cT5PtoLpfkSNdBmNWdBhwPpXyJySp91hgT9AyxH1z6KnG7EigwTG</span>
+
+<span class="kd">const</span> <span class="vg">privKeyT</span> <span class="o">=</span> <span class="kp">key:</span><span class="l">cNoGEsgNT1k2CedvwpKuPxrCYsLpwgG254n1FwwJZCGRHnEiPV8y</span>
+
+
+<span class="kd">transaction</span> <span class="vg">Tinit</span> <span class="o">{</span>
+ <span class="k">input</span> <span class="o">=</span> <span class="n">_</span>
+ <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">s1</span><span class="o">,</span> <span class="n">s2</span><span class="o">,</span> <span class="n">sCur</span><span class="o">)</span> <span class="o">.</span>
+ <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyCur</span><span class="o">;</span> <span class="n">sCur</span><span class="o">)</span> <span class="o">||</span>
+ <span class="k">checkDate</span> <span class="n">deadline</span><span class="o">:</span>
+ <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyCur2</span><span class="o">;</span> <span class="n">sCur</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+ <span class="o">(</span><span class="k">versig</span><span class="o">(</span><span class="n">pubkeyA</span><span class="o">,</span> <span class="n">pubkeyB</span><span class="o">,</span> <span class="n">pubkeyC</span><span class="o">;</span> <span class="n">s1</span><span class="o">,</span> <span class="n">s2</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="kd">transaction</span> <span class="nf">T1</span><span class="o">(</span><span class="n">pubKeyS</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">input</span> <span class="o">=</span> <span class="n">Tinit</span>@<span class="mi">0</span> <span class="o">:</span>  <span class="k">sig</span><span class="o">(</span><span class="n">privKeyA</span><span class="o">)</span> <span class="k">sig</span><span class="o">(</span><span class="n">privKeyB</span><span class="o">)</span> <span class="k">sig</span><span class="o">(</span><span class="n">privKeyCur2</span><span class="o">)</span>
+    <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sS</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubKeyS</span><span class="o">;</span> <span class="n">sS</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="kd">transaction</span> <span class="vg">T2</span> <span class="o">{</span>
+    <span class="k">input</span> <span class="o">=</span> <span class="n">Tinit</span>@<span class="mi">0</span> <span class="o">:</span> <span class="n">_</span> <span class="n">_</span> <span class="nf">sig</span><span class="o">(</span><span class="n">privKeyCur</span><span class="o">)</span>
+    <span class="k">output</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">BTC</span> <span class="o">:</span> <span class="k">fun</span><span class="o">(</span><span class="n">sS</span><span class="o">)</span> <span class="o">.</span> <span class="k">versig</span><span class="o">(</span><span class="n">pubkeyT</span><span class="o">;</span> <span class="n">sS</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">eval</span> <span class="n">Tinit</span><span class="o">,</span><span class="n">T1</span><span class="o">(</span><span class="kp">pubkey:</span><span class="l">03101e19883cef323b85a53ce580bb5c7545ff024294c74cf2ee7931ab09c931b2</span><span class="o">),</span><span class="n">T2</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="more-contracts.html" class="btn btn-neutral float-right" title="More contracts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="auction.html" class="btn btn-neutral" title="Auction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, N. Atzei, M. Bartoletti, S. Lande, R. Zunino.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2022-03-09_080234',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/documentation_options.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+     
+    <script type="text/javascript" src="_static/js/codesets.js"></script>
+    <script type="text/javascript" src="_static/js/codecompare.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101929937-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-101929937-2');
+    </script>
+
+    <!-- Remove empty span -->
+    <script type="text/javascript">
+        $('span:empty').remove()
+    </script>
+
+
+</body>
+</html>
